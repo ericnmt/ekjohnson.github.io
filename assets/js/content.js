@@ -51,7 +51,7 @@ window.CONTENT = {
       "<b>CS undergrad</b> · Data Science minor",
       "<b>New Mexico Institute of Mining & Technology</b>"
     ],
-    bio: "Three years at <b>Los Alamos National Laboratory</b> across HPC and infrastructure engineering, plus applied research experience in machine learning at <b>New Mexico Tech</b>. <span>I have experience in cluster provisioning, automation in the environments they live in, and most recently am am looking ingo hardware Trojans in side-channel signal traces. </span>I am seeking a summer 2027 undergraduate internship in Artificial Intelligence, Machine Learning, or High-Performance Computing."
+    bio: "Three years at <b>Los Alamos National Laboratory</b> across HPC and infrastructure engineering, plus applied research experience in machine learning (ML) at <b>New Mexico Tech</b>. <span>I have experience in cluster provisioning, automation in the environments they live in, and most recently am looking into hardware Trojans in side-channel signal traces. </span>I am seeking a summer 2027 undergraduate internship in Artificial Intelligence, Machine Learning, or High-Performance Computing."
 
   },
 
@@ -60,7 +60,7 @@ window.CONTENT = {
     eyebrow: "My skills",
     hint:    "drag to rotate · click to jump to relevant project",
     heading: "What I actually work with",
-    sublede: "<span>My experience spans both</span> High-Performance Computing & Sytems Administration and Machine Learning Research. <span>Below are the skills that I have deleoped as a result.</span>",
+    sublede: "<span>My experience spans both</span> High-Performance Computing / Sytems Administration and Machine Learning Research. <span>Below are the skills that I have deleoped as a result.</span>",
     legendA: "HPC &amp; infrastructure",
     legendB: "Research &amp; ML",
     readout: "",
