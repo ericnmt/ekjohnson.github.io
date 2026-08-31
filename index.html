@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eric Johnson</title>
+<meta name="description" content="">
+<meta name="color-scheme" content="dark">
+<meta property="og:title" content="Eric Johnson">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/img/mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+
+<canvas id="bg" aria-hidden="true"></canvas>
+
+<header id="hdr"><div class="hin">
+  <div class="mark">
+    <button class="markbtn" id="markbtn" aria-expanded="false" aria-haspopup="true" aria-label="Menu">
+      <canvas id="markc" width="84" height="84" aria-hidden="true"></canvas>
+    </button>
+    <div class="menu" id="menu"></div>
+  </div>
+  <span class="push"></span>
+  <nav class="soc">
+    <a data-c-href="links.github" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg><span>GitHub</span></a>
+    <a data-c-href="links.linkedin" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 16 16"><path d="M3.6 5.3H.6V15h3zM2.1 4a1.74 1.74 0 1 0 0-3.5 1.74 1.74 0 0 0 0 3.5M15.4 15h-3v-4.7c0-1.2-.02-2.7-1.66-2.7-1.66 0-1.92 1.3-1.92 2.62V15h-3V5.3h2.88v1.32h.04c.4-.76 1.38-1.56 2.84-1.56 3.04 0 3.6 2 3.6 4.6z"/></svg><span>LinkedIn</span></a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+
+<!-- ===== 1. opening ===== -->
+<section id="hero">
+  <div class="reveal">
+    <p class="eyebrow"><span data-c="hero.eyebrow"></span><span class="rt" data-c="hero.badge"></span></p>
+    <h1 class="htitle" data-c="hero.name"></h1>
+    <p class="hrole" data-c-spans="hero.role"></p>
+    <p class="hbio" data-c="hero.bio"></p>
+  </div>
+</section>
+
+<!-- ===== 2. keyword space ===== -->
+<section id="skills">
+  <div class="reveal">
+    <p class="eyebrow"><span data-c="skills.eyebrow"></span><span class="rt" data-c="skills.hint"></span></p>
+    <h2 data-c="skills.heading"></h2>
+    <p class="sublede" data-c="skills.sublede"></p>
+    <div class="tagwrap" id="tagwrap"><canvas id="tagc"></canvas></div>
+    <div class="tagfoot">
+      <span><i class="sw" style="background:var(--am)"></i><span data-c="skills.legendA"></span></span>
+      <span><i class="sw" style="background:var(--ice)"></i><span data-c="skills.legendB"></span></span>
+      <span id="tagread" data-c="skills.readout"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3. resume ===== -->
+<section id="resume">
+  <div class="reveal">
+    <p class="eyebrow"><span data-c="resume.eyebrow"></span><span class="rt" data-c="resume.filename"></span></p>
+    <div class="pdf" data-pdf="resume"></div>
+  </div>
+</section>
+
+<!-- ===== 4. HPC internship ===== -->
+<section id="hpc">
+  <div class="reveal">
+    <p class="eyebrow"><span data-c="hpc.eyebrow"></span><span class="rt" data-c="hpc.meta"></span></p>
+    <h2 data-c="hpc.heading"></h2>
+    <p class="sublede" data-c="hpc.sublede"></p>
+    <div class="two">
+      <div class="card pbox">
+        <h3 data-c="hpc.clusterTitle"></h3>
+        <div class="toolbar">
+          <button class="btn" id="provision">Provision fleet</button>
+          <button class="btn ghost" id="reprov">Reprovision · vswitch root</button>
+          <span class="readout" id="rackread">idle · <b>0</b>/32 up</span>
+        </div>
+        <div class="hpcwrap" id="hpcwrap">
+          <canvas class="cables" id="cables"></canvas>
+          <div class="headnode" id="headnode">
+            <span class="hled"></span>
+            <span class="hl">HEAD NODE</span>
+            <span class="hs">openchami · slurmctld · ansible</span>
+            <span class="hr" id="headstate">idle</span>
+          </div>
+          <div class="rack" id="rack"></div>
+        </div>
+        <div class="imgsel" style="margin-top:12px">
+          <span>ROOT IMAGE</span>
+          <button data-img="0" aria-pressed="true">rocky9-hpl</button>
+          <button data-img="1" aria-pressed="false">ubuntu24-ml</button>
+          <button data-img="2" aria-pressed="false">rhel9-debug</button>
+        </div>
+        <div class="nodeinfo" id="nodeinfo" data-c="hpc.nodeInfo"></div>
+      </div>
+      <div class="card pbox">
+        <h3 data-c="hpc.clockTitle"></h3>
+        <div class="nixie" id="nixie"></div>
+        <div class="nixlbl"><span>SECONDS</span><span id="nixstate">SCROLL TO MEASURE</span></div>
+        <div class="nixbar"><i id="nixbar"></i></div>
+        <div class="metrics" style="margin-top:18px" data-c-facts="hpc.facts"></div>
+        <p class="afternote" data-c="hpc.clockNote"></p>
+      </div>
+    </div>
+    <div class="prose desc" data-c-list="hpc.points"></div>
+    <div class="pdf" style="margin-top:18px" data-pdf="hpc.pdf"></div>
+  </div>
+</section>
+
+<!-- ===== 5. IT systems engineering ===== -->
+<section id="it">
+  <div class="reveal">
+    <p class="eyebrow"><span data-c="it.eyebrow"></span><span class="rt" data-c="it.meta"></span></p>
+    <h2 data-c="it.heading"></h2>
+    <p class="sublede" data-c="it.sublede"></p>
+    <div class="card pbox">
+      <div class="toolbar">
+        <button class="btn" id="applyplaybook">Apply playbook</button>
+        <button class="btn ghost" id="driftbtn">Introduce drift</button>
+        <span class="readout" id="fleetread"><b>0</b>/64 converged</span>
+      </div>
+      <div class="fleet"><div class="fgrid" id="fgrid"></div></div>
+      <div class="flegend">
+        <span><i class="sw" style="border-color:#202027"></i>unmanaged</span>
+        <span><i class="sw" style="border-color:#3A2A0C"></i>drifted from declared state</span>
+        <span><i class="sw" style="border-color:rgba(111,200,240,.55);background:rgba(111,200,240,.16)"></i>converged</span>
+        <span style="margin-left:auto" data-c="it.legendNote"></span>
+      </div>
+    </div>
+    <div class="prose desc" data-c-list="it.points"></div>
+  </div>
+</section>
+
+<!-- ===== 6. hardware Trojan research ===== -->
+<section id="research">
+  <div class="reveal">
+    <p class="eyebrow"><span data-c="research.eyebrow"></span><span class="rt" data-c="research.meta"></span></p>
+    <h2 data-c="research.heading"></h2>
+    <p class="sublede" data-c="research.sublede"></p>
+
+    <div class="tracestage">
+      <div class="tracesticky">
+        <div class="tracehead">
+          <span class="lg"><i class="ice"></i><span data-c="research.legendA"></span></span>
+          <span class="lg"><i class="am"></i><span data-c="research.legendB"></span></span>
+          <span class="lg" style="color:var(--faint)" data-c="research.traceNote"></span>
+        </div>
+        <canvas id="trace"></canvas>
+      </div>
+    </div>
+
+    <div class="flowlink"><i></i><span data-c="research.flowlink"></span><i></i></div>
+
+    <div class="two">
+      <div class="card pbox">
+        <h3 data-c="research.featTitle"></h3>
+        <div class="plot feat"><canvas id="feat"></canvas>
+          <span class="ax-y" data-c="research.axisY"></span><span class="ax-x" data-c="research.axisX"></span></div>
+      </div>
+      <div class="card pbox desc">
+        <div class="toolbar">
+          <button class="btn ice" id="detect">Run detector</button>
+          <button class="btn ghost" id="reseed">New sample set</button>
+        </div>
+        <div data-c-list="research.points"></div>
+        <p class="selinfo" id="selinfo"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span data-c="site.footerLeft"></span><span data-c="site.footerRight"></span>
+  <span class="mocknote" data-c="site.footerNote"></span>
+</footer>
+</main>
+
+<script src="assets/js/content.js"></script>
+<script src="assets/js/site.js"></script>
+</body>
+</html>
