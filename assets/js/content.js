@@ -44,14 +44,14 @@ window.CONTENT = {
 
   /* ---------- 1. opening ---------- */
   hero: {
-    eyebrow: "Computer science undergraduate",
-    badge:   "Available summer 2027",
+    /* eyebrow: "Computer science undergraduate",
+    badge:   "Available summer 2027", */
     name:    "Eric Johnson",
     role: [
       "<b>B.S. in CS undergrad</b> · Data Science minor",
       "<b>New Mexico Institute of Mining & Technology</b>"
     ],
-    bio: "Three years at <b>Los Alamos National Laboratory</b> across HPC and infrastructure engineering, plus applied research experience in machine learning (ML) at <b>New Mexico Tech</b>. <span>I have experience in cluster provisioning, automation in the environments they live in, and most recently am looking into hardware Trojans in side-channel signal traces. </span>I am seeking a summer 2027 undergraduate internship in Artificial Intelligence, Machine Learning, or High-Performance Computing."
+    bio: "Three years at <b>Los Alamos National Laboratory</b> across HPC and infrastructure automation, plus applied research experience in Machine Learning at <b>New Mexico Tech</b> as part of the <b>Intel Undergraduate Research Program</b>. <span>I have experience in cluster provisioning, automation in the environments they live in, and most recently am looking into hardware Trojans using side-channel signal traces with Deep Learning algorithms. </span>I am seeking a summer 2027 undergraduate internship in Artificial Intelligence, Machine Learning, or High-Performance Computing."
 
   },
 
@@ -60,7 +60,7 @@ window.CONTENT = {
     eyebrow: "My skills",
     hint:    "drag to rotate · click to jump to relevant project",
     heading: "What I actually work with",
-    sublede: "<span>My experience spans both</span> High-Performance Computing / Sytems Administration and Machine Learning Research. <span>Below are the skills that I have deleoped as a result.</span>",
+    sublede: "My experience spans both</span> High-Performance Computing / Sytems Administration and Machine Learning Research. Below are the skills that I have deleoped as a result.</span>",
     legendA: "HPC &amp; infrastructure",
     legendB: "Research &amp; ML",
     readout: "",
@@ -98,18 +98,18 @@ window.CONTENT = {
 
   /* ---------- 4. HPC internship ---------- */
   hpc: {
-    eyebrow: "Experience — LANL",
+    eyebrow: "Los Alamos National Laboratory (LANL)",
     meta:    "Supercomputer Institute · May 2026 – August 2026",
     heading: "High-Performance Computing Intern",
     sublede: "Deployed and administered an HPC compute cluster with a peer team, and developed a novel boot method that reprovisions a node in seconds rather than minutes.",
 
-    clusterTitle: "Cluster — head node + 4 chassis · 32 compute nodes",
-    nodeInfo:     "Click any node for its state. The head node provisions with OpenCHAMI, schedules with Slurm, and holds configuration with Ansible.",
+    /* clusterTitle: "Cluster — head node + 4 chassis · 32 compute nodes", */
+    nodeInfo:     "Click any node for its state.",
 
-    clockTitle: "Reprovision time",
-    clockNote:  "The counter is tied to the page: it winds down from the traditional reprovision window as this section comes into view and settles at the measured time for the container-and-hypervisor path.",
+    clockTitle: "Achieved Reprovision time*",
+    clockNote:  "*Reprovision time results are from unofficial trials not reported",
     facts: [
-      { value: "containers + hypervisors", label: "virtual switch root" },
+      { value: "Virtual Switch Root", label: "containers + hypervisors" },
       { value: "MPI · HPL",                label: "benchmarked" },
       /* { value: "2026 Showcase",            label: "presented at LANL" } */
     ],
@@ -132,7 +132,7 @@ window.CONTENT = {
 
   /* ---------- 5. IT systems engineering ---------- */
   it: {
-    eyebrow: "LANL",
+    eyebrow: "Los Alamos National Laboratory (LANL)",
     meta:    "June 2023 – May 2026",
     heading: "IT Systems Automation Intern",
     sublede: "Turned per-machine handwork into declared state. Introduce drift, then apply the playbook and watch the fleet converge.",
