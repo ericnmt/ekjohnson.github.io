@@ -48,7 +48,7 @@ window.CONTENT = {
     badge:   "Available summer 2027",
     name:    "Eric Johnson",
     role: [
-      "<b>CS undergrad</b> · Data Science minor",
+      "<b>B.S. in CS undergrad</b> · Data Science minor",
       "<b>New Mexico Institute of Mining & Technology</b>"
     ],
     bio: "Three years at <b>Los Alamos National Laboratory</b> across HPC and infrastructure engineering, plus applied research experience in machine learning (ML) at <b>New Mexico Tech</b>. <span>I have experience in cluster provisioning, automation in the environments they live in, and most recently am looking into hardware Trojans in side-channel signal traces. </span>I am seeking a summer 2027 undergraduate internship in Artificial Intelligence, Machine Learning, or High-Performance Computing."
