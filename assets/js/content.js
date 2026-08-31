@@ -17,9 +17,9 @@ window.CONTENT = {
   /* ---------- page + browser tab ---------- */
   site: {
     title:       "Eric Johnson",
-    description: "Computer science undergraduate. High-performance computing, infrastructure automation, and side-channel machine learning research.",
+    description: "Computer Scince undergraduate. High-Performance Computing, infrastructure automation, and hardware trojan detection machine learning research.",
     footerLeft:  "Eric Johnson",
-    footerRight: "New Mexico Tech",
+    footerRight: "2026",
     footerNote:  ""                    /* right-hand footer note; leave "" for none */
   },
 
@@ -38,7 +38,7 @@ window.CONTENT = {
     { id: "skills",   label: "Keyword space",              ratio: [4, 3] },
     { id: "resume",   label: "Resume",                     ratio: [5, 3] },
     { id: "hpc",      label: "High-Performance Computing", ratio: [5, 4] },
-    { id: "it",       label: "IT Systems Engineering",     ratio: [7, 5] },
+    { id: "it",       label: "IT Systems Automation",     ratio: [7, 5] },
     { id: "research", label: "Hardware Trojan research",   ratio: [9, 7] }
   ],
 
@@ -49,21 +49,21 @@ window.CONTENT = {
     name:    "Eric Johnson",
     role: [
       "<b>CS undergrad</b> · Data Science minor",
-      "New Mexico Tech · <b>3.8 GPA</b>",
-      "Class of <b>2028</b>"
+      "<b>New Mexico Institute of Mining & Technology</b>"
     ],
-    bio: "Three years at <b>Los Alamos National Laboratory</b> across HPC and infrastructure engineering, plus applied research in machine learning. <span>I provision clusters, automate the environments they live in, and — most recently — look for hardware Trojans in side-channel traces. Seeking a summer 2027 undergraduate internship with CAI in applied computer science.</span>"
+    bio: "Three years at <b>Los Alamos National Laboratory</b> across HPC and infrastructure engineering, plus applied research experience in machine learning at <b>New Mexico Tech</b>. <span>I have experience in cluster provisioning, automation in the environments they live in, and most recently am am looking ingo hardware Trojans in side-channel signal traces. </span>I am seeking a summer 2027 undergraduate internship in Artificial Intelligence, Machine Learning, or High-Performance Computing."
+
   },
 
   /* ---------- 2. keyword space ---------- */
   skills: {
-    eyebrow: "Keyword space",
-    hint:    "drag to rotate · hover for neighbours · click to jump",
+    eyebrow: "My skills",
+    hint:    "drag to rotate · click to jump to relevant project",
     heading: "What I actually work with",
-    sublede: "Every keyword is drawn from the resume and sits in a rotating three-dimensional projection, clustered by the work it belongs to. Depth is real — near terms are larger and brighter. Hovering one holds the rotation and draws its nearest neighbours with distances.",
+    sublede: "<span>My experience spans both</span> High-Performance Computing & Sytems Administration and Machine Learning Research. <span>Below are the skills that I have deleoped as a result.</span>",
     legendA: "HPC &amp; infrastructure",
     legendB: "Research &amp; ML",
-    readout: "30 keywords · 3 clusters · hover to trace co-occurrence",
+    readout: "",
 
     /* Each entry is [ "the words on the pill", "which cluster" ].
        The cluster must be one of: "hpc", "it", "research".
@@ -71,16 +71,16 @@ window.CONTENT = {
     keywords: [
       ["MPI", "hpc"], ["HPL", "hpc"], ["Slurm", "hpc"], ["OpenCHAMI", "hpc"],
       ["parallel benchmarking", "hpc"], ["containers", "hpc"], ["hypervisors", "hpc"],
-      ["Rocky Linux", "hpc"], ["Podman", "hpc"], ["node reprovisioning", "hpc"],
+      ["Rocky Linux", "hpc"], ["Podman", "hpc"], ["node reprovisioning", "hpc"], ["systemd-nspawn", "hpc"]
 
       ["Ansible", "it"], ["GitLab CI/CD", "it"], ["Red Hat Satellite", "it"],
-      ["Hyper-V", "it"], ["PowerShell", "it"], ["systemd-nspawn", "it"],
+      ["Hyper-V", "it"], ["PowerShell", "it"],
       ["Docker", "it"], ["RHEL", "it"], ["documentation", "it"], ["Bash", "it"],
       ["SQL", "it"],
 
       ["PyOD", "research"], ["PyTorch", "research"], ["anomaly detection", "research"],
-      ["side-channel", "research"], ["CNNs", "research"], ["Hugging Face", "research"],
-      ["Keras / TF", "research"], ["Python", "research"], ["R", "research"]
+      ["side-channel", "research"], ["Hugging Face", "research"],
+      ["Keras / TF", "research"], ["Python", "research"], ["R", "research"], /* ["CNNs", "research"] */
     ]
   },
 
@@ -90,7 +90,7 @@ window.CONTENT = {
      Leave file as "" and the section shows an empty viewer slot instead. */
   resume: {
     eyebrow:   "Resume",
-    filename:  "resume.pdf",
+    filename:  "",
     file:      "",
     slotTitle: "Resume",
     slotHint:  "drop the PDF into assets/pdf/ and name it in content.js"
@@ -99,7 +99,7 @@ window.CONTENT = {
   /* ---------- 4. HPC internship ---------- */
   hpc: {
     eyebrow: "Experience — LANL",
-    meta:    "Supercomputer Institute · May 2026 – present",
+    meta:    "Supercomputer Institute · May 2026 – August 2026",
     heading: "High-Performance Computing Intern",
     sublede: "Deployed and administered an HPC compute cluster with a peer team, and developed a novel boot method that reprovisions a node in seconds rather than minutes.",
 
@@ -109,9 +109,9 @@ window.CONTENT = {
     clockTitle: "Reprovision time",
     clockNote:  "The counter is tied to the page: it winds down from the traditional reprovision window as this section comes into view and settles at the measured time for the container-and-hypervisor path.",
     facts: [
-      { value: "containers + hypervisors", label: "boot path" },
-      { value: "MPI · HPL",                label: "benchmarked with" },
-      { value: "2026 Showcase",            label: "presented at LANL" }
+      { value: "containers + hypervisors", label: "virtual switch root" },
+      { value: "MPI · HPL",                label: "benchmarked" },
+      /* { value: "2026 Showcase",            label: "presented at LANL" } */
     ],
 
     points: [
@@ -132,10 +132,10 @@ window.CONTENT = {
 
   /* ---------- 5. IT systems engineering ---------- */
   it: {
-    eyebrow: "Experience — LANL",
-    meta:    "Sensitive &amp; Special Operations · June 2023 – May 2026",
-    heading: "IT Systems Engineering Intern",
-    sublede: "Three years turning per-machine handwork into declared state. Introduce drift, then apply the playbook and watch the fleet converge.",
+    eyebrow: "LANL",
+    meta:    "June 2023 – May 2026",
+    heading: "IT Systems Automation Intern",
+    sublede: "Turned per-machine handwork into declared state. Introduce drift, then apply the playbook and watch the fleet converge.",
     legendNote: "illustrative — host count is not from the role",
 
     points: [
@@ -147,8 +147,8 @@ window.CONTENT = {
 
   /* ---------- 6. hardware Trojan research ---------- */
   research: {
-    eyebrow: "Research — Intel Undergraduate Research Fellow",
-    meta:    "NM Tech · Aug – Dec 2026",
+    eyebrow: "Intel Undergraduate Research Fellow",
+    meta:    "New Mexico Institute of Mining & Technology · Aug – Dec 2026",
     heading: "Golden-chip-free hardware Trojan detection",
     sublede: "Both runs of the same AES core — Trojan dormant and Trojan triggered — drawn on top of each other inside the faint bundle of the other 53 measurements. The 2,500 samples run one revolution of a ring around the package they were measured from. Scrolling carries the sweep out from behind the chip, round the near side of the ring — closer, larger, brighter — and back in behind it, so both ends of the record stay out of sight.",
 
@@ -168,7 +168,7 @@ window.CONTENT = {
 
     /* the small line under the description that changes as you use the plot.
        {id} is replaced with the trace being pointed at. */
-    selinfoIdle:     "Hover a point to load its trace above. No labels and no golden reference — only the separation the detector can find on its own.",
-    selinfoDetected: "ECOD and Isolation Forest agree — <b class=\"r\">AES-{id}</b> sits outside 3&sigma; on mean dynamic power. The rounds where it draws are marked on the trace above; on the trace alone the two runs are indistinguishable."
+    /* selinfoIdle:     "Hover a point to load its trace above. No labels and no golden reference — only the separation the detector can find on its own.",
+    selinfoDetected: "ECOD and Isolation Forest agree — <b class=\"r\">AES-{id}</b> sits outside 3&sigma; on mean dynamic power. The rounds where it draws are marked on the trace above; on the trace alone the two runs are indistinguishable." */
   }
 };
