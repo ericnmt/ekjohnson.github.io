@@ -31,8 +31,8 @@ window.CONTENT = {
 
   /* ---------- the drop-down menu behind the logo ----------
      id must match the section id in index.html.
-     ratio is the two numbers shown beside the label — it also sets the
-     Lissajous figure the logo draws while that section is on screen. */
+     ratio sets the Lissajous figure the mark eases to while that section is on
+     screen — two small whole numbers. It is not shown as text anywhere. */
   menu: [
     { id: "hero",     label: "Intro",                      ratio: [3, 2] },
     { id: "skills",   label: "Keyword space",              ratio: [4, 3] },
@@ -58,12 +58,8 @@ window.CONTENT = {
   /* ---------- 2. keyword space ---------- */
   skills: {
     eyebrow: "Keyword space",
-    hint:    "drag to rotate · hover for neighbours · click to jump",
     heading: "What I actually work with",
-    sublede: "Every keyword is drawn from the resume and sits in a rotating three-dimensional projection, clustered by the work it belongs to. Depth is real — near terms are larger and brighter. Hovering one holds the rotation and draws its nearest neighbours with distances.",
-    legendA: "HPC &amp; infrastructure",
-    legendB: "Research &amp; ML",
-    readout: "30 keywords · 3 clusters · hover to trace co-occurrence",
+    sublede: "Everything below is drawn from the resume, grouped by the work it belongs to \u2014 the clusters are the three roles.",
 
     /* Each entry is [ "the words on the pill", "which cluster" ].
        The cluster must be one of: "hpc", "it", "research".
@@ -93,7 +89,7 @@ window.CONTENT = {
     filename:  "resume.pdf",
     file:      "",
     slotTitle: "Resume",
-    slotHint:  "drop the PDF into assets/pdf/ and name it in content.js"
+    slotHint:  ""
   },
 
   /* ---------- 4. HPC internship ---------- */
@@ -102,11 +98,6 @@ window.CONTENT = {
     meta:    "Supercomputer Institute · May 2026 – present",
     heading: "High-Performance Computing Intern",
     sublede: "Deployed and administered an HPC compute cluster with a peer team, and developed a boot method that swaps a node\u2019s root image and brings it back without a full reprovision cycle.",
-
-    clusterTitle: "Machine-room aisle \u2014 18 racks \u00b7 144 bays",
-    legendOld:    "current root image",
-    legendNew:    "reprovisioned root image",
-    hint:         "scroll to run the front down the aisle \u00b7 hover a rack",
 
     points: [
       "<b>Novel boot method.</b> Developed and presented a boot method leveraging containers and hypervisors to enable rapid node reprovisioning, benchmarked using MPI and HPL against traditional methods. Presented findings at LANL's 2026 HPC Intern Showcase.",
@@ -120,7 +111,7 @@ window.CONTENT = {
       filename:  "showcase-poster.pdf",
       file:      "",
       slotTitle: "Showcase poster / slides",
-      slotHint:  "drop the PDF into assets/pdf/ and name it in content.js"
+      slotHint:  ""
     }
   },
 
@@ -129,11 +120,7 @@ window.CONTENT = {
     eyebrow: "Experience — LANL",
     meta:    "Sensitive &amp; Special Operations · June 2023 – May 2026",
     heading: "IT Systems Engineering Intern",
-    sublede: "Three years turning per-machine handwork into declared state. Every host is a stack of config facets sitting at its own offset; scrolling runs the playbook across the lattice and pulls them onto the declared line.",
-    latticeTitle: "Fleet — 48 hosts × 5 config facets",
-    legendDrift: "drifted from declared state",
-    legendSync:  "converged",
-    legendNote: "illustrative — host count is not from the role",
+    sublede: "Three years turning per-machine handwork into declared state.",
 
     points: [
       "<b>Centralised the environment.</b> Stood up and administered Red Hat Satellite and GitLab servers, enabling centralized Linux package distribution and source code management across the group's IT development environment.",
@@ -147,22 +134,12 @@ window.CONTENT = {
     eyebrow: "Research — Intel Undergraduate Research Fellow",
     meta:    "NM Tech · Aug – Dec 2026",
     heading: "Golden-chip-free hardware Trojan detection",
-    sublede: "Both runs of the same AES core — Trojan dormant and Trojan triggered — drawn on top of each other inside the faint bundle of the other 53 measurements. The 2,500 samples run one revolution of a ring around the package they were measured from. Scrolling carries the sweep out from behind the chip, round the near side of the ring — closer, larger, brighter — and back in behind it, so both ends of the record stay out of sight.",
-
-    legendA:   "inactive",
-    legendB:   "triggered",
-    traceNote: "2,500 samples · one revolution of the package",
-    flowlink:  "each trace collapses to one point",
-
-    featTitle:     "Every trace as one point",
-    legendUsual:   "inside the boundary",
-    legendUnusual: "outside it",
-    hint:          "drag to rotate · hover a point to load its trace above",
+    sublede: "Finding a Trojan in a chip you have no clean copy of, using only what the power draw gives away.",
 
     points: [
       "<b>The problem.</b> Evaluating anomaly detection models from the Python Outlier Detection (PyOD) library for golden-chip-free hardware Trojan detection on power and electromagnetic side-channel traces from AES Trojan variants (Trust Hub / IEEE DataPort).",
       "<b>Why it\u2019s hard.</b> Benchmarking detector effectiveness against classical baselines on unlabeled, imbalanced measurement data, where dormant Trojans separate from baseline circuits only by dynamic power draw.",
-      "<b>What the space shows.</b> Each measurement reduces to a handful of numbers and becomes one point. Almost all of them fall together. The detector learns where that crowd sits, draws a boundary around it, and whatever ends up outside is what gets looked at \u2014 no labels, and no golden reference chip to compare against."
+      "<b>The approach.</b> Reduce each measurement to a handful of numbers, learn where the ordinary ones sit, and rank whatever falls outside that. No labels, and no golden reference chip to compare against."
     ]
   }
 };

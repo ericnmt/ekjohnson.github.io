@@ -1,10 +1,10 @@
 :root{
   --bg:#0B0A08; --panel:#131110; --panel2:#1A1714; --rail:#211C17;
   --ink:#F2ECE1; --dim:#9C9285; --faint:#635B50;
-  --am:#FFB020; --am-d:#38290C;
-  --brass:#B98A3C;
+  --am:#D08A52; --am-d:#33210F;
+  --brass:#9A6A40;
   --ice:#6FC8F0; --ice-d:#0F2733;
-  --red:#FF4A45;
+  --red:#FF3D63;
   --line:#2A2520; --line2:#1E1A16;
   --dsp:"Archivo","Helvetica Neue",sans-serif;
   --txt:"Atkinson Hyperlegible",system-ui,sans-serif;
@@ -100,10 +100,6 @@ h2{font-family:var(--dsp);font-weight:700;font-variation-settings:"wdth" 108;
 .tag.near{color:var(--am);border-color:rgba(255,176,32,.65);background:rgba(58,42,12,.9)}
 .tag[data-g="research"].hot{background:var(--ice);border-color:var(--ice);color:#04161E}
 .tag[data-g="research"].near{color:var(--ice);border-color:rgba(111,200,240,.6);background:rgba(15,39,51,.9)}
-.tagfoot{display:flex;flex-wrap:wrap;gap:18px;margin-top:12px;font-family:var(--mono);font-size:10.5px;
-  color:var(--faint);letter-spacing:.06em;align-items:center}
-.tagfoot .sw{width:9px;height:9px;border-radius:2px;display:inline-block;vertical-align:-1px;margin-right:6px}
-#tagread b{color:var(--am);font-weight:500}
 
 /* ---------- pdf embed ---------- */
 .pdf{border:1px solid var(--line);border-radius:4px;overflow:hidden;background:var(--panel)}
@@ -139,7 +135,7 @@ h2{font-family:var(--dsp);font-weight:700;font-variation-settings:"wdth" 108;
 .pbox{padding:20px}
 .pbox h3{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;
   color:var(--faint);margin:0 0 14px;font-weight:400}
-.two{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:18px}
+.two{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:18px;align-items:start}
 @media(max-width:900px){.two{grid-template-columns:1fr}}
 .desc p{margin:0 0 11px;font-size:14.5px;color:var(--dim)}
 .desc p b{color:var(--ink);font-weight:700}
@@ -156,34 +152,21 @@ h2{font-family:var(--dsp);font-weight:700;font-variation-settings:"wdth" 108;
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
 .readout{font-family:var(--mono);font-size:10.5px;color:var(--faint);letter-spacing:.06em;margin-left:auto}
 .readout b{color:var(--am);font-weight:500}
-.flegend{display:flex;flex-wrap:wrap;gap:16px;margin-top:14px;font-family:var(--mono);font-size:10px;
-  color:var(--faint);letter-spacing:.06em;align-items:center}
-.flegend .sw{width:10px;height:10px;border-radius:2px;border:1px solid transparent;display:inline-block;vertical-align:-1px;margin-right:6px}
-.cardhead{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:12px}
-.cardhead h3{margin:0}
-.cardhead .readout{margin-left:auto}
-.stagewrap{position:relative;background:rgba(14,13,12,.72);border:1px solid var(--line);
+.stagewrap{position:relative;margin-top:4px;background:rgba(14,13,12,.72);border:1px solid var(--line);
   border-radius:3px;overflow:hidden}
-#aisle{display:block;width:100%;height:min(46vh,420px)}
+#aisle{display:block;width:100%;height:min(50vh,460px)}
 #lattice{display:block;width:100%;height:250px}
-#feat{display:block;width:100%;height:360px;cursor:grab;touch-action:pan-y}
+#feat{display:block;width:100%;height:340px;cursor:grab;touch-action:pan-y}
 #feat:active{cursor:grabbing}
 @media(max-width:700px){#aisle{height:38vh}#lattice{height:300px}#feat{height:280px}}
 
 /* research — abstract trace + feature space */
-.lg{font-family:var(--mono);font-size:10px;color:var(--dim);display:inline-flex;gap:6px;
-  align-items:center;letter-spacing:.1em;text-transform:uppercase}
-.lg i{width:15px;height:2px;border-radius:2px;display:block}
-.lg i.ice{background:var(--ice)}.lg i.am{background:var(--am)}
 .tracestage{position:relative;width:100vw;margin-left:calc(50% - 50vw)}
 .tracesticky{display:flex;flex-direction:column}
 .tracehead{max-width:1140px;width:100%;margin:0 auto 6px;padding:0 26px;display:flex;gap:18px;
   align-items:center;flex-wrap:wrap}
 #trace{display:block;width:100%;height:66vh;max-height:760px}
 @media(max-width:700px){#trace{height:46vh}.tracehead{padding:0 22px}}
-.flowlink{display:flex;align-items:center;gap:14px;margin:14px 0 20px;font-family:var(--mono);
-  font-size:10px;color:var(--faint);letter-spacing:.14em;text-transform:uppercase}
-.flowlink i{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--brass) 30%,var(--line) 70%,transparent)}
 footer{position:relative;z-index:2;border-top:1px solid var(--line);margin-top:70px;padding:26px 0 60px;
   font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.05em;
   display:flex;flex-wrap:wrap;gap:8px 22px;align-items:center}

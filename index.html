@@ -47,15 +47,10 @@
 <!-- ===== 2. keyword space ===== -->
 <section id="skills">
   <div class="reveal">
-    <p class="eyebrow"><span data-c="skills.eyebrow"></span><span class="rt" data-c="skills.hint"></span></p>
+    <p class="eyebrow"><span data-c="skills.eyebrow"></span></p>
     <h2 data-c="skills.heading"></h2>
     <p class="sublede" data-c="skills.sublede"></p>
     <div class="tagwrap" id="tagwrap"><canvas id="tagc"></canvas></div>
-    <div class="tagfoot">
-      <span><i class="sw" style="background:var(--am)"></i><span data-c="skills.legendA"></span></span>
-      <span><i class="sw" style="background:var(--ice)"></i><span data-c="skills.legendB"></span></span>
-      <span id="tagread" data-c="skills.readout"></span>
-    </div>
   </div>
 </section>
 
@@ -73,18 +68,7 @@
     <p class="eyebrow"><span data-c="hpc.eyebrow"></span><span class="rt" data-c="hpc.meta"></span></p>
     <h2 data-c="hpc.heading"></h2>
     <p class="sublede" data-c="hpc.sublede"></p>
-    <div class="card pbox">
-      <div class="cardhead">
-        <h3 data-c="hpc.clusterTitle"></h3>
-        <span class="readout" id="rackread"></span>
-      </div>
-      <div class="stagewrap"><canvas id="aisle"></canvas></div>
-      <div class="flegend">
-        <span><i class="sw" style="background:var(--am)"></i><span data-c="hpc.legendOld"></span></span>
-        <span><i class="sw" style="background:var(--ice)"></i><span data-c="hpc.legendNew"></span></span>
-        <span style="margin-left:auto" data-c="hpc.hint"></span>
-      </div>
-    </div>
+    <div class="stagewrap"><canvas id="aisle"></canvas></div>
     <div class="prose desc" data-c-list="hpc.points"></div>
     <div class="pdf" style="margin-top:18px" data-pdf="hpc.pdf"></div>
   </div>
@@ -96,18 +80,7 @@
     <p class="eyebrow"><span data-c="it.eyebrow"></span><span class="rt" data-c="it.meta"></span></p>
     <h2 data-c="it.heading"></h2>
     <p class="sublede" data-c="it.sublede"></p>
-    <div class="card pbox">
-      <div class="cardhead">
-        <h3 data-c="it.latticeTitle"></h3>
-        <span class="readout" id="fleetread"></span>
-      </div>
-      <div class="stagewrap"><canvas id="lattice"></canvas></div>
-      <div class="flegend">
-        <span><i class="sw" style="background:var(--am)"></i><span data-c="it.legendDrift"></span></span>
-        <span><i class="sw" style="background:var(--ice)"></i><span data-c="it.legendSync"></span></span>
-        <span style="margin-left:auto" data-c="it.legendNote"></span>
-      </div>
-    </div>
+    <div class="stagewrap"><canvas id="lattice"></canvas></div>
     <div class="prose desc" data-c-list="it.points"></div>
   </div>
 </section>
@@ -121,33 +94,13 @@
 
     <div class="tracestage">
       <div class="tracesticky">
-        <div class="tracehead">
-          <span class="lg"><i class="ice"></i><span data-c="research.legendA"></span></span>
-          <span class="lg"><i class="am"></i><span data-c="research.legendB"></span></span>
-          <span class="lg" style="color:var(--faint)" data-c="research.traceNote"></span>
-        </div>
         <canvas id="trace"></canvas>
       </div>
     </div>
 
-    <div class="flowlink"><i></i><span data-c="research.flowlink"></span><i></i></div>
-
     <div class="two">
-      <div class="card pbox">
-        <div class="cardhead">
-          <h3 data-c="research.featTitle"></h3>
-          <span class="readout" id="featread"></span>
-        </div>
-        <div class="stagewrap"><canvas id="feat"></canvas></div>
-        <div class="flegend">
-          <span><i class="sw" style="background:var(--ice)"></i><span data-c="research.legendUsual"></span></span>
-          <span><i class="sw" style="background:var(--red)"></i><span data-c="research.legendUnusual"></span></span>
-          <span style="margin-left:auto" data-c="research.hint"></span>
-        </div>
-      </div>
-      <div class="card pbox desc">
-        <div data-c-list="research.points"></div>
-      </div>
+      <div class="stagewrap"><canvas id="feat"></canvas></div>
+      <div class="prose desc" data-c-list="research.points"></div>
     </div>
   </div>
 </section>

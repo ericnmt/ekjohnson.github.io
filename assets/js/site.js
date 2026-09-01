@@ -37,7 +37,7 @@ const cget=p=>p.split('.').reduce((o,k)=>(o==null?o:o[k]),C);
 
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const TAU=Math.PI*2, RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const CL={am:'#FFB020',ice:'#6FC8F0',red:'#FF4A45',ink:'#F2ECE1',dim:'#9C9285',faint:'#635B50',line:'#2A2520',brass:'#B98A3C'};
+const CL={am:'#D08A52',ice:'#6FC8F0',red:'#FF3D63',ink:'#F2ECE1',dim:'#9C9285',faint:'#635B50',line:'#2A2520',brass:'#9A6A40'};
 const rgba=(h,a)=>`rgba(${parseInt(h.slice(1,3),16)},${parseInt(h.slice(3,5),16)},${parseInt(h.slice(5,7),16)},${a})`;
 const lerp=(a,b,t)=>a+(b-a)*t, clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const easeIO=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
@@ -98,10 +98,14 @@ requestAnimationFrame(frame);
 /* ===================== MARK + MENU ===================== */
 const SECTIONS=(C.menu&&C.menu.length?C.menu:[{id:'hero',label:'Intro',ratio:[3,2]}]);
 let CUR=0,RA=3,RB=2;
+/* ===================== MARK + MENU =====================
+   The mark is a Lissajous figure whose x:y ratio eases to the one set for
+   whichever section is on screen (menu[].ratio in content.js), so it is always
+   in motion and never quite the same shape twice. */
 (function MARK(){
   const cv=$('#markc'),x=cv.getContext('2d');x.scale(2,2);
   register(t=>{
-    const tg=SECTIONS[CUR].ratio;RA=lerp(RA,tg[0],.055);RB=lerp(RB,tg[1],.055);
+    const tg=SECTIONS[CUR].ratio||[3,2];RA=lerp(RA,tg[0],.055);RB=lerp(RB,tg[1],.055);
     x.clearRect(0,0,42,42);
     const pts=[];
     for(let i=0;i<=200;i++){const u=i/200*TAU;
@@ -110,7 +114,7 @@ let CUR=0,RA=3,RB=2;
     x.strokeStyle=rgba(CL.am,.95);x.lineWidth=1.15;x.stroke();
     x.strokeStyle=rgba(CL.am,.15);x.lineWidth=3.6;x.stroke()});
   const menu=$('#menu'),btn=$('#markbtn');
-  menu.innerHTML=SECTIONS.map((s,i)=>`<a href="#${s.id}" data-id="${s.id}" style="--d:${40+i*26}ms"><span>${s.label}</span><span class="s">${s.ratio[0]}:${s.ratio[1]}</span></a>`).join('');
+  menu.innerHTML=SECTIONS.map((s,i)=>`<a href="#${s.id}" data-id="${s.id}" style="--d:${40+i*26}ms"><span>${s.label}</span></a>`).join('');
   const close=()=>{menu.classList.remove('open');btn.setAttribute('aria-expanded','false')};
   btn.onclick=e=>{e.stopPropagation();const open=!menu.classList.contains('open');
     menu.classList.toggle('open',open);btn.setAttribute('aria-expanded',String(open))};
@@ -164,7 +168,7 @@ $$('.reveal').forEach(el=>new IntersectionObserver(es=>es.forEach(e=>{
   const el=N.map(n=>{const b=document.createElement('button');
     b.className='tag';b.type='button';b.textContent=n.t;b.dataset.g=n.g;
     b.addEventListener('pointerenter',()=>hot(n));
-    b.addEventListener('pointerleave',()=>{HOT=null;read.textContent='30 keywords · 3 clusters · hover to trace co-occurrence'});
+    b.addEventListener('pointerleave',()=>{HOT=null;if(read)read.textContent=''});
     b.addEventListener('focus',()=>hot(n));
     b.addEventListener('blur',()=>{HOT=null});
     b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();
@@ -178,7 +182,7 @@ $$('.reveal').forEach(el=>new IntersectionObserver(es=>es.forEach(e=>{
     const near=N.filter(o=>o!==n&&o.g===n.g)
       .map(o=>({o,d:Math.hypot(o.x-n.x,o.y-n.y,o.z-n.z)})).sort((a,b)=>a.d-b.d).slice(0,4);
     HOT.near=near;
-    read.innerHTML='<b>'+n.t+'</b> — nearest: '+near.map(k=>k.o.t+' <span style="color:var(--faint)">'+(k.d*1.0).toFixed(2)+'</span>').join(' · ')}
+    if(read)read.innerHTML='<b>'+n.t+'</b>'}
   function size(){dpr=Math.min(2,devicePixelRatio||1);const r=wrap.getBoundingClientRect();
     Wd=r.width;Hd=r.height;cv.width=Wd*dpr;cv.height=Hd*dpr;x.setTransform(dpr,0,0,dpr,0,0)}
   size();addEventListener('resize',size);
@@ -262,7 +266,7 @@ $$('.reveal').forEach(el=>new IntersectionObserver(es=>es.forEach(e=>{
   const cv=$('#aisle'); if(!cv)return;
   const ax=cv.getContext('2d'), readEl=$('#rackread');
   const NR=9, NB=8;                  /* racks per side, bays per rack */
-  const AW=0.58, RW=0.46, RH=1.00;   /* aisle half-width, rack depth, rack height */
+  const AW=0.58, RW=0.66, RH=1.00;   /* aisle half-width, rack depth, rack height */
   const PITCH=0.88, GAP=0.15;
   const EYE=0.54, D0=1.98;           /* eye height, distance to the first rack */
   const ZMAX=(NR-1)*PITCH, TRANS=0.60;
@@ -874,7 +878,7 @@ $$('.reveal').forEach(el=>new IntersectionObserver(es=>es.forEach(e=>{
     let X=x*cy0+z*sy0, Z=-x*sy0+z*cy0;
     let Y=y*cx0-Z*sx0; Z=y*sx0+Z*cx0;
     const k=FOV/(FOV+Z);
-    const R=Math.min(FW*0.46,FH*0.52);
+    const R=Math.min(FW*0.46,FH*0.58);
     out[0]=FW/2+X*k*R; out[1]=FH/2+Y*k*R; out[2]=k; out[3]=Z; return out}
 
   const ppos=P=>project(P.ux/FSCALE,-P.uy/FSCALE,P.uz/FSCALE,[0,0,0,0]);
