@@ -73,39 +73,16 @@
     <p class="eyebrow"><span data-c="hpc.eyebrow"></span><span class="rt" data-c="hpc.meta"></span></p>
     <h2 data-c="hpc.heading"></h2>
     <p class="sublede" data-c="hpc.sublede"></p>
-    <div class="two">
-      <div class="card pbox">
+    <div class="card pbox">
+      <div class="cardhead">
         <h3 data-c="hpc.clusterTitle"></h3>
-        <div class="toolbar">
-          <button class="btn" id="provision">Provision fleet</button>
-          <button class="btn ghost" id="reprov">Reprovision · vswitch root</button>
-          <span class="readout" id="rackread">idle · <b>0</b>/32 up</span>
-        </div>
-        <div class="hpcwrap" id="hpcwrap">
-          <canvas class="cables" id="cables"></canvas>
-          <div class="headnode" id="headnode">
-            <span class="hled"></span>
-            <span class="hl">HEAD NODE</span>
-            <span class="hs">openchami · slurmctld · ansible</span>
-            <span class="hr" id="headstate">idle</span>
-          </div>
-          <div class="rack" id="rack"></div>
-        </div>
-        <div class="imgsel" style="margin-top:12px">
-          <span>ROOT IMAGE</span>
-          <button data-img="0" aria-pressed="true">rocky9-hpl</button>
-          <button data-img="1" aria-pressed="false">ubuntu24-ml</button>
-          <button data-img="2" aria-pressed="false">rhel9-debug</button>
-        </div>
-        <div class="nodeinfo" id="nodeinfo" data-c="hpc.nodeInfo"></div>
+        <span class="readout" id="rackread"></span>
       </div>
-      <div class="card pbox">
-        <h3 data-c="hpc.clockTitle"></h3>
-        <div class="nixie" id="nixie"></div>
-        <div class="nixlbl"><span>SECONDS</span><span id="nixstate">SCROLL TO MEASURE</span></div>
-        <div class="nixbar"><i id="nixbar"></i></div>
-        <div class="metrics" style="margin-top:18px" data-c-facts="hpc.facts"></div>
-        <p class="afternote" data-c="hpc.clockNote"></p>
+      <div class="stagewrap"><canvas id="aisle"></canvas></div>
+      <div class="flegend">
+        <span><i class="sw" style="background:var(--am)"></i><span data-c="hpc.legendOld"></span></span>
+        <span><i class="sw" style="background:var(--ice)"></i><span data-c="hpc.legendNew"></span></span>
+        <span style="margin-left:auto" data-c="hpc.hint"></span>
       </div>
     </div>
     <div class="prose desc" data-c-list="hpc.points"></div>
@@ -120,16 +97,14 @@
     <h2 data-c="it.heading"></h2>
     <p class="sublede" data-c="it.sublede"></p>
     <div class="card pbox">
-      <div class="toolbar">
-        <button class="btn" id="applyplaybook">Apply playbook</button>
-        <button class="btn ghost" id="driftbtn">Introduce drift</button>
-        <span class="readout" id="fleetread"><b>0</b>/64 converged</span>
+      <div class="cardhead">
+        <h3 data-c="it.latticeTitle"></h3>
+        <span class="readout" id="fleetread"></span>
       </div>
-      <div class="fleet"><div class="fgrid" id="fgrid"></div></div>
+      <div class="stagewrap"><canvas id="lattice"></canvas></div>
       <div class="flegend">
-        <span><i class="sw" style="border-color:#202027"></i>unmanaged</span>
-        <span><i class="sw" style="border-color:#3A2A0C"></i>drifted from declared state</span>
-        <span><i class="sw" style="border-color:rgba(111,200,240,.55);background:rgba(111,200,240,.16)"></i>converged</span>
+        <span><i class="sw" style="background:var(--am)"></i><span data-c="it.legendDrift"></span></span>
+        <span><i class="sw" style="background:var(--ice)"></i><span data-c="it.legendSync"></span></span>
         <span style="margin-left:auto" data-c="it.legendNote"></span>
       </div>
     </div>
@@ -171,10 +146,6 @@
         </div>
       </div>
       <div class="card pbox desc">
-        <div class="toolbar">
-          <button class="btn ice" id="detect">Run detector</button>
-          <button class="btn ghost" id="reseed">New sample set</button>
-        </div>
         <div data-c-list="research.points"></div>
       </div>
     </div>
