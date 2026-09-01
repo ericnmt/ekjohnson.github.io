@@ -18,8 +18,8 @@ window.CONTENT = {
   site: {
     title:       "Eric Johnson",
     description: "CS Undergrad. HPC, Automation, Sysadmin, and side-channel machine learning research.",
-    footerLeft:  "Eric Johnson",
-    footerRight: "New Mexico Institute of Mining & Technology",
+    footerLeft:  "© 2026Eric Johnson",
+    footerRight: "",
     footerNote:  ""                    /* right-hand footer note; leave "" for none */
   },
 
@@ -44,8 +44,8 @@ window.CONTENT = {
 
   /* ---------- 1. opening ---------- */
   hero: {
-    /* eyebrow: "Computer science undergraduate", */
-    /* badge:   "Available summer 2027", */
+    eyebrow: "Intel Undergraduate Research Fellowship",
+    badge:   "Available summer 2027",
     name:    "Eric Johnson",
     role: [
       "<b>B.S. in Computer Science undergraduate</b> · Data Science minor",
@@ -91,15 +91,29 @@ window.CONTENT = {
     slotHint:  ""
   },
 
-  /* ---------- 4. HPC internship ---------- */
+    /* ---------- 4. hardware Trojan research ---------- */
+  research: {
+    eyebrow: "Research — Intel Undergraduate Research Fellow",
+    meta:    "New Mexico Institute of Mining & Technology · Aug – Dec 2026",
+    heading: "Golden-chip-free hardware Trojan detection",
+    sublede: "I am currently evaluating anomaly detection models from the Python Outlier Detection (PyOD) library for golden-chip-free hardware Trojan detection on power and electromagnetic side-channel traces. The goal is to benchmark algorithm effectiveness against classical baselines on unlabeled measurement data, flagging anything that falls outside the ordinary.",
+
+    points: [
+      "<b>The problem.</b> Hardware Trojan detection is a critical challenge in ensuring the security of integrated circuits. Traditional methods rely on golden chip references, which are impractical to obtain in many scenarios.",
+      "<b>The challenge.</b> Side-channel traces are high-dimensional, noisy, and often unlabeled, making it difficult to identify anomalies indicative of hardware Trojans. The lack of a golden reference chip further complicates the detection process.",
+      "<b>The approach.</b> Using deep learning and anomaly detection techniques, I am evaluating various models from the PyOD library to identify potential hardware Trojans in side-channel traces. The goal is to develop a robust detection framework that can operate effectively without the need for golden chip references."
+    ]
+  },
+
+  /* ---------- 3. HPC internship ---------- */
   hpc: {
     eyebrow: "Los Alamos National Laboratory (LANL)",
     meta:    "Supercomputer Institute · May – August 2026",
     heading: "High-Performance Computing Intern",
-    sublede: "At the Supercomputer Institute, I worked with a peer team to develop a novel boot method for HPC node reprovisioning, bringing together containers and hypervisors to enable rapid node reprovisioning. We benchmarked our method using MPI AllReduce and HPL against traditional methods, and presented our findings at <a href=\"https://www.lanl.gov/engage/organizations/aldsct/hpc/intern-resources/intern-showcase\" target=\"_blank\" rel=\"noopener noreferrer\">LANL's 2026 HPC Intern Showcase</a>. Additionally, I deployed and administered an HPC compute cluster with a peer team, using OpenCHAMI and Slurm for provisioning and job scheduling, leveraging Ansible and CI/CD pipelines for configuration.",
+    sublede: "At the Supercomputer Institute, I worked with a peer team to develop a novel boot method for HPC node reprovisioning, bringing together containers and virtual machines to enable rapid node image swapping. We benchmarked our method using MPI AllReduce and HPL against traditional methods, and presented our findings at <a href=\"https://www.lanl.gov/engage/organizations/aldsct/hpc/intern-resources/intern-showcase\" target=\"_blank\" rel=\"noopener noreferrer\">LANL's 2026 HPC Intern Showcase</a>. Additionally, I deployed and administered an HPC compute cluster with a peer team, using OpenCHAMI and Slurm for provisioning and job scheduling, leveraging Ansible and CI/CD pipelines for configuration.",
 
     points: [
-      "<b>Rapid Reprovisioning.</b> Presented <b>Virtual Switch Root</b>, a novel boot method for HPC compute node reprovisioning. The key innovation is leveraging a systemd-nspawn container or QEMU VM to boot a node into a minimal environment, where the node can then reprovision itself from a networked image. This method enables rapid reprovisioning of compute nodes, reducing downtime and improving overall cluster efficiency.",
+      "<b>Rapid reprovisioning.</b> Presented <b>Virtual Switch Root</b>, a novel boot method for HPC compute node reprovisioning. The key innovation is leveraging a systemd-nspawn container or QEMU VM to boot a node into a minimal environment, where the node can then reprovision itself from a networked boot image. This method enables rapid image swapping on compute nodes, reducing downtime and improving overall cluster efficiency.",
       "<b>Cluster deployment.</b> Over the course of three weeks, I worked with a team to stand up and deploy a compute cluster using OpenCHAMI, cloud-init, Slurm WLM, and Ansible for configuration management. We leveraged CI/CD pipelines to automate the deployment process, ensuring consistency and repeatability across the cluster.",
     ],
 
@@ -127,18 +141,4 @@ window.CONTENT = {
       "<b>Documentation.</b> Authored and maintained cross-platform documentation across Linux, Windows and Ansible, and provided troubleshooting support — giving new hires self-service references for common workflows and environment setup."
     ]
   },
-
-  /* ---------- 6. hardware Trojan research ---------- */
-  research: {
-    eyebrow: "Research — Intel Undergraduate Research Fellow",
-    meta:    "New Mexico Institute of Mining & Technology · Aug – Dec 2026",
-    heading: "Golden-chip-free hardware Trojan detection",
-    sublede: "I am currently evaluating anomaly detection models from the Python Outlier Detection (PyOD) library for golden-chip-free hardware Trojan detection on power and electromagnetic side-channel traces. The goal is to benchmark algorithm effectiveness against classical baselines on unlabeled measurement data, flagging anything that falls outside the ordinary.",
-
-    points: [
-      "<b>The problem.</b> Hardware Trojan detection is a critical challenge in ensuring the security of integrated circuits. Traditional methods rely on golden chip references, which are impractical to obtain in many scenarios.",
-      "<b>The challenge.</b> Side-channel traces are high-dimensional, noisy, and often unlabeled, making it difficult to identify anomalies indicative of hardware Trojans. The lack of a golden reference chip further complicates the detection process.",
-      "<b>The approach.</b> Reduce each measurement to a handful of numbers, learn where the ordinary ones sit, and rank whatever falls outside that. No labels, and no golden reference chip to compare against."
-    ]
-  }
 };
