@@ -18,7 +18,7 @@ window.CONTENT = {
   site: {
     title:       "Eric Johnson",
     description: "CS Undergrad. HPC, Automation, Sysadmin, and side-channel machine learning research.",
-    footerLeft:  "© 2026Eric Johnson",
+    footerLeft:  "© 2026 Eric Johnson",
     footerRight: "",
     footerNote:  ""                    /* right-hand footer note; leave "" for none */
   },
@@ -42,14 +42,22 @@ window.CONTENT = {
     { id: "research", label: "Hardware Trojan research",   ratio: [9, 7] }
   ],
 
+    menu: [
+    { id: "hero",     label: "Intro",                      ratio: [3, 2] },
+    { id: "skills",   label: "My Skills",              ratio: [4, 3] },
+    { id: "resume",   label: "Resume",                     ratio: [5, 3] },
+    { id: "research", label: "Hardware Trojan Research",  ratio: [5, 4] },
+    { id: "hpc",      label: "High-Performance Computing Intern", ratio: [7, 5] },
+    { id: "it",       label: "IT Systems Automation Intern",     ratio: [9, 7] },
+  ],
+
   /* ---------- 1. opening ---------- */
   hero: {
     eyebrow: "Intel Undergraduate Research Fellowship",
     badge:   "· AVAILABLE SUMMER 2027",
     name:    "Eric Johnson",
     role: [
-      "<b>B.S. in Computer Science undergraduate</b> · Data Science minor",
-      "· <b>New Mexico Institute of Mining & Technology</b>"
+      "<b>B.S. in Computer Science undergraduate</b> · Data Science minor · <b>New Mexico Institute of Mining & Technology</b>"
       /* "Class of <b>2028</b>" */
     ],
     bio: "Three years at <b>Los Alamos National Laboratory</b> across High-Performance Computing (HPC), systems administration, and infrastructure automation, plus applied research experience in Machine Learning at <b>New Mexico Institute of Mining & Technology</b> as part of the <b>Intel Undergraduate Research Program</b>. <span>I have experience in cluster provisioning, automation in the environments they live in, and most recently am looking into hardware Trojans using side-channel signal traces with Deep Learning algorithms. </span>I am seeking a summer 2027 undergraduate internship in Artificial Intelligence, Machine Learning, or High-Performance Computing."
@@ -58,7 +66,7 @@ window.CONTENT = {
   /* ---------- 2. keyword space ---------- */
   skills: {
     eyebrow: "My Skills",
-    heading: "What I actually work with",
+    heading: "What I work with",
     sublede: "My experience spans both</span> High-Performance Computing / Systems Administration and Machine Learning Research. Everything below are the skills that I have developed so far as a result.</span>",
 
     /* Each entry is [ "the words on the pill", "which cluster" ].
@@ -99,7 +107,7 @@ window.CONTENT = {
     sublede: "At the Supercomputer Institute, I worked with a peer team to develop a novel boot method for HPC node reprovisioning, bringing together containers and virtual machines to enable rapid node image swapping. We benchmarked our method using MPI AllReduce and HPL against traditional methods, and presented our findings at <a href=\"https://www.lanl.gov/engage/organizations/aldsct/hpc/intern-resources/intern-showcase\" target=\"_blank\" rel=\"noopener noreferrer\">LANL's 2026 HPC Intern Showcase</a>. Additionally, I deployed and administered an HPC compute cluster with a peer team, using OpenCHAMI and Slurm for provisioning and job scheduling, leveraging Ansible and CI/CD pipelines for configuration.",
 
     points: [
-      "<b>Rapid reprovisioning.</b> Presented <b>Virtual Switch Root</b>, a novel boot method for HPC compute node reprovisioning. The key innovation is leveraging a systemd-nspawn container or QEMU VM to boot a node into a minimal environment, where the node can then reprovision itself from a networked boot image. This method enables rapid image swapping on compute nodes, reducing downtime and improving overall cluster efficiency.",
+      "<b>Virtual switch root.</b> A novel boot technique for HPC node reprovisioning, enabling rapid node image swapping by combining systemd-nspawn containers and QEMU virtual machines. We benchmarked our techniques against traditional methods using MPI AllReduce and High-Performance Linpack (HPL), demonstrating that cloud-like flexibility can be achieved within HPC with minimal performance loss.",
       "<b>Cluster deployment.</b> Over the course of three weeks, I worked with a team to stand up and deploy a compute cluster using OpenCHAMI, cloud-init, Slurm WLM, and Ansible for configuration management. We leveraged CI/CD pipelines to automate the deployment process, ensuring consistency and repeatability across the cluster.",
     ],
 
@@ -119,7 +127,7 @@ window.CONTENT = {
     eyebrow: "Los Alamos National Laboratory (LANL)",
     meta:    "June 2023 – May 2026",
     heading: "IT Systems Automation Intern",
-    sublede: "My role was to maintain and automate the Linux and Windows environments, while writing comprehensive technical documentation for the group. I implemented Ansible Automation and PowerShell workflows to replace manual per-VM configuration and snapshotting with automated, repeatable provisioning and state management. I also stood up and administered Red Hat Satellite and GitLab servers, enabling centralized Linux package distribution and source code management.",
+    sublede: "My role was to maintain and automate the Linux and Windows environments, while authoring and continuously updating comprehensive technical documentation for the group. I implemented Ansible Automation Platform and PowerShell workflows to replace manual per-VM configuration and snapshotting with automated, repeatable provisioning and state management. I also stood up and administered Red Hat Satellite and GitLab servers, enabling centralized Linux package distribution and source code management.",
 
     points: [
       "<b>Centralization.</b> Stood up and administered Red Hat Satellite and GitLab servers, centralizing Linux package distribution and source code management.",
