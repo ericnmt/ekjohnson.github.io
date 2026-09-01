@@ -251,186 +251,293 @@ $$('.reveal').forEach(el=>new IntersectionObserver(es=>es.forEach(e=>{
 })();
 
 /* ===================== HPC — CLUSTER ===================== */
-(function CLUSTER(){
-  const rack=$('#rack'),wrapEl=$('#hpcwrap'),cables=$('#cables'),cx=cables.getContext('2d');
-  const IMAGES=['rocky9-hpl','ubuntu24-ml','rhel9-debug'];
-  let curImg=0;
-  const CH=4,PER=8,nodes=[];
-  for(let c=0;c<CH;c++){
-    const ch=document.createElement('div');ch.className='chassis';
-    ch.innerHTML=`<div class="ct"><span>CHASSIS ${c+1}</span><span>c${c+1}n1–8</span></div>`;
-    for(let n=0;n<PER;n++){
-      const d=document.createElement('div');d.className='node';d.dataset.s='off';
-      d.innerHTML=`<i class="fill"></i><span class="lbl">c${c+1}n${n+1}</span><span class="st">off</span>`;
-      const rec={el:d,c,n,state:'off',img:0,ms:0};
-      d.addEventListener('click',()=>{
-        $$('#rack .node').forEach(e=>e.classList.remove('sel'));d.classList.add('sel');
-        $('#nodeinfo').innerHTML=`<b>c${c+1}n${n+1}</b> · ${rec.state==='off'?'powered down':'root <b>'+IMAGES[rec.img]+'</b>'} · `+
-          (rec.state==='up'?`slurm partition <b>debug</b> · vswitch root attached · last switch <b>${rec.ms||'—'} ms</b>`
-           :rec.state==='prov'?'OpenCHAMI streaming image — container + hypervisor path'
-           :rec.state==='swap'?'detaching root, attaching new image over the virtual switch'
-           :'press Provision fleet')});
-      nodes.push(rec);ch.append(d)}
-    rack.append(ch)}
-  function setStat(rec,s,txt){rec.state=s;rec.el.dataset.s=s;rec.el.querySelector('.st').textContent=txt}
-  function upd(){const u=nodes.filter(n=>n.state==='up').length;
-    $('#rackread').innerHTML=(u===32?'fleet up · root '+IMAGES[curImg]:'idle')+' · <b>'+u+'</b>/32 up';
-    $('#headstate').textContent=u===32?'32 nodes attached':'idle'}
+/* ===================== HPC — PROVISIONING AISLE =====================
+   A machine-room aisle in one-point perspective: two rows of racks receding to a
+   vanishing point, with the image source at the far end. Scroll drives a
+   reprovision front down the aisle toward the viewer. Racks behind the front are
+   on the new root image, racks ahead of it are still on the old one, and the
+   narrow dark band between the two is the only window in which a node is down.
+   The pointer parallaxes the camera and picks out a rack. Nothing is clickable. */
+(function AISLE(){
+  const cv=$('#aisle'); if(!cv)return;
+  const ax=cv.getContext('2d'), readEl=$('#rackread');
+  const NR=9, NB=8;                  /* racks per side, bays per rack */
+  const AW=0.58, RW=0.46, RH=1.00;   /* aisle half-width, rack depth, rack height */
+  const PITCH=0.88, GAP=0.15;
+  const EYE=0.54, D0=1.98;           /* eye height, distance to the first rack */
+  const ZMAX=(NR-1)*PITCH, TRANS=0.60;
+  const IMG_OLD='rocky9-hpl', IMG_NEW='ubuntu24-ml';
 
-  let GEO={w:0,h:0};
-  /* cables: head node at the top, a bus across, a riser beside each chassis and a
-     tap out to every compute node */
-  register(t=>{
-    const r=wrapEl.getBoundingClientRect();
-    const dpr=Math.min(2,devicePixelRatio||1);
-    const cw=Math.round(r.width*dpr), chh=Math.round(r.height*dpr);
-    if(cables.width!==cw||cables.height!==chh){cables.width=cw;cables.height=chh}
-    cx.setTransform(cw/r.width,0,0,chh/r.height,0,0);
-    cx.clearRect(0,0,r.width,r.height);
-    if(GEO.w!==r.width||GEO.h!==r.height){
-      const hb=$('#headnode').getBoundingClientRect();
-      GEO={w:r.width,h:r.height,
-        hx:hb.left-r.left+hb.width/2, hy:hb.bottom-r.top,
-        chs:$$('#rack .chassis').map(c=>{const b=c.getBoundingClientRect();
-          return {l:b.left-r.left}}),
-        nd:nodes.map(nd=>{const b=nd.el.getBoundingClientRect();
-          return {x:b.left-r.left,y:b.top-r.top+b.height/2}})}}
-    const hx=GEO.hx, busY=GEO.hy+16;
-    const risers=GEO.chs.map(c=>c.l-7);
-    /* how far down each riser has to run */
-    const deep=risers.map((_,i)=>Math.max(...GEO.nd.filter((_,j)=>nodes[j].c===i).map(g=>g.y)));
-    /* head stub + bus */
-    cx.lineCap='round';
-    cx.strokeStyle=rgba(CL.am,.55);cx.lineWidth=1.5;
-    cx.beginPath();cx.moveTo(hx,GEO.hy);cx.lineTo(hx,busY);
-    cx.moveTo(Math.min(hx,...risers),busY);cx.lineTo(Math.max(hx,...risers),busY);
-    cx.stroke();
-    /* risers down the gap beside each chassis, stopping where the last elbow starts */
-    const RAD=(gx,rx)=>Math.max(5,Math.min(13,(gx-rx)*0.86));
-    cx.strokeStyle=rgba(CL.brass,.55);cx.lineWidth=1.2;
-    cx.beginPath();
-    risers.forEach((rx,i)=>{
-      const last=GEO.nd.filter((_,j)=>nodes[j].c===i).reduce((a,g)=>g.y>a.y?g:a,{y:-1e9,x:rx});
-      cx.moveTo(rx,busY);cx.lineTo(rx,last.y-RAD(last.x,rx))});
-    cx.stroke();
-    /* one tap per node: leaves the riser vertically, fillets, arrives level with the node */
-    nodes.forEach((nd,gi)=>{
-      const g=GEO.nd[gi], rx=risers[nd.c], on=nd.state!=='off', R=RAD(g.x,rx);
-      cx.strokeStyle=on?rgba(CL.ice,.62):rgba(CL.brass,.44);
-      cx.lineWidth=on?1.2:1;
-      cx.beginPath();
-      cx.moveTo(rx,g.y-R-6);
-      cx.arcTo(rx,g.y,g.x,g.y,R);
-      cx.lineTo(g.x,g.y);
-      cx.stroke();
-      cx.fillStyle=on?rgba(CL.ice,.9):rgba(CL.brass,.5);
-      cx.beginPath();cx.arc(g.x,g.y,1.6,0,TAU);cx.fill();
-      if(nd.state==='up'||nd.state==='swap'){
-        /* the packet follows the real path: down the riser, round the fillet, into the node */
-        const L1=Math.max(0,(g.y-R)-busY), L2=Math.PI/2*R, L3=Math.max(0,g.x-(rx+R));
-        const L=L1+L2+L3, d=((t*.30+(nd.c*8+nd.n)*.031)%1)*L;
-        let bx,by;
-        if(d<L1){bx=rx;by=busY+d}
-        else if(d<L1+L2){const a=(d-L1)/R;      /* centre of the fillet */
-          bx=rx+R-Math.cos(a)*R; by=(g.y-R)+Math.sin(a)*R}
-        else{bx=rx+R+(d-L1-L2);by=g.y}
-        cx.fillStyle=rgba(nd.state==='swap'?CL.am:CL.ice,.95);
-        cx.beginPath();cx.arc(bx,by,1.8,0,TAU);cx.fill()}});
-    cx.fillStyle=rgba(CL.am,.95);cx.beginPath();cx.arc(hx,busY,3,0,TAU);cx.fill();
-  },{every:2,el:wrapEl});
+  let W=0,H=0,dpr=1,FOC=1,CX=0,CY=0;
+  let camX=0,camY=0,mtX=0,mtY=0,hasPtr=false,hov=null,p=0;
 
-  let busy=false;
-  $('#provision').onclick=()=>{
-    if(busy)return;busy=true;$('#provision').disabled=true;
-    nodes.forEach(n=>{setStat(n,'off','off');n.el.querySelector('.fill').style.width='0'});
-    $('#headstate').textContent='openchami: provisioning';
-    let i=0;const iv=setInterval(()=>{
-      if(i<nodes.length){const n=nodes[i];n.img=curImg;
-        setStat(n,'prov','prov');n.el.querySelector('.fill').style.width='55%';
-        setTimeout(()=>{setStat(n,'up',IMAGES[n.img].split('-')[0]);
-          n.el.querySelector('.fill').style.width='100%';upd()},520)}
-      i++;if(i>nodes.length+4){clearInterval(iv);busy=false;$('#provision').disabled=false}
-    },62)};
+  function size(){
+    dpr=Math.min(2,devicePixelRatio||1);
+    const r=cv.getBoundingClientRect(); W=r.width; H=r.height;
+    cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr);
+    ax.setTransform(dpr,0,0,dpr,0,0);
+    FOC=Math.min(W*0.72,H*1.72); CX=W/2; CY=H*0.50}
+  size(); addEventListener('resize',size);
 
-  $('#reprov').onclick=()=>{
-    const up=nodes.filter(n=>n.state==='up');
-    if(!up.length){$('#rackread').innerHTML='nothing to reprovision — provision first';return}
-    if(busy)return;busy=true;$('#reprov').disabled=true;
-    const next=(curImg+1)%IMAGES.length;
-    $$('.imgsel button').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.img===next)));
-    $('#headstate').textContent='vswitch: detach → attach '+IMAGES[next];
-    const t0=performance.now();
-    up.forEach((n,k)=>setTimeout(()=>{
-      setStat(n,'swap','swap');
-      setTimeout(()=>{n.img=next;n.ms=180+Math.round(Math.random()*90);
-        setStat(n,'up',IMAGES[next].split('-')[0]);
-        if(k===up.length-1){curImg=next;busy=false;$('#reprov').disabled=false;
-          const el=((performance.now()-t0)/1000).toFixed(1);
-          $('#rackread').innerHTML='root switched to <b>'+IMAGES[next]+'</b> · '+up.length+' nodes · '+el+' s';
-          $('#headstate').textContent='32 nodes attached'}},200)},k*22))};
+  /* one-point perspective: the camera sits in the aisle looking down it */
+  function P(X,Y,Z,out){
+    const k=FOC/(Z+D0);
+    out[0]=CX+(X-camX)*k;
+    out[1]=CY-(Y-EYE-camY)*k;
+    out[2]=k; return out}
+  const pt=(X,Y,Z)=>P(X,Y,Z,[0,0,0]);
+  const quad=(a,b,c,d)=>{ax.beginPath();ax.moveTo(a[0],a[1]);ax.lineTo(b[0],b[1]);
+    ax.lineTo(c[0],c[1]);ax.lineTo(d[0],d[1]);ax.closePath()};
+  const seg=(a,b)=>{ax.beginPath();ax.moveTo(a[0],a[1]);ax.lineTo(b[0],b[1]);ax.stroke()};
+  const KN=FOC=>0; /* placeholder, unused */
+  const dep=k=>clamp((k-FOC/(ZMAX+D0))/((FOC/D0)-(FOC/(ZMAX+D0))),0,1);
 
-  $$('.imgsel button').forEach(b=>b.onclick=()=>{
-    if(busy)return;curImg=+b.dataset.img;
-    $$('.imgsel button').forEach(o=>o.setAttribute('aria-pressed',String(o===b)));
-    nodes.filter(n=>n.state==='up').forEach(n=>{n.img=curImg;
-      n.el.querySelector('.st').textContent=IMAGES[curImg].split('-')[0]});
-    upd()});
+  /* a little per-bay stagger so a rack does not switch all at once */
+  let sd=17; const rr=()=>{sd=(sd*9301+49297)%233280;return sd/233280};
+  const JIT=[]; for(let i=0;i<NR*2*NB;i++)JIT.push((rr()*2-1)*0.20);
 
-  /* ---- nixie countdown driven by scroll ---- */
-  const nix=$('#nixie'),digits=[];
-  [0,0,0,'.',0].forEach(d=>{
-    const tube=document.createElement('div');tube.className='tube'+(d==='.'?' dot':'');
-    tube.innerHTML=d==='.'?'<span class="lit" style="font-size:22px">.</span>'
-      :'<span class="g">8</span><span class="lit">0</span>';
-    nix.append(tube);if(d!=='.')digits.push(tube.querySelector('.lit'))});
-  const TARGET=20.7,START=240.0;
-  let shown=START;
-  const sec=$('#hpc');
+  function bayY(b){const h=(RH-0.10)/NB; return [0.05+b*h+h*0.14, 0.05+b*h+h*0.86]}
+
+  function drawRack(side,i,F){
+    const Xin=side*AW, Xout=side*(AW+RW);
+    const Z0=i*PITCH, Z1=Z0+PITCH-GAP, zc=(Z0+Z1)/2;
+    const k0=FOC/(Z0+D0), d=dep(k0);
+    /* the side of the rack facing the camera */
+    const nf=[pt(Xin,0,Z0),pt(Xout,0,Z0),pt(Xout,RH,Z0),pt(Xin,RH,Z0)];
+    quad(nf[0],nf[1],nf[2],nf[3]);
+    const gsd=ax.createLinearGradient(0,nf[2][1],0,nf[0][1]);
+    gsd.addColorStop(0,'#191510'); gsd.addColorStop(1,'#0A0908');
+    ax.fillStyle=gsd; ax.fill();
+    ax.strokeStyle=rgba(CL.brass,.16+.18*d); ax.lineWidth=1; ax.stroke();
+    /* the U divisions, so the side of the rack reads as a rack */
+    ax.strokeStyle=rgba(CL.brass,.07+.08*d); ax.lineWidth=.8;
+    for(let b=0;b<NB;b++){const y=bayY(b)[0];
+      seg(pt(Xin,y,Z0),pt(Xout,y,Z0))}
+    ax.strokeStyle=rgba(CL.brass,.06+.07*d);
+    seg(pt(Xout-side*RW*0.30,0,Z0),pt(Xout-side*RW*0.30,RH,Z0));
+    /* the face onto the aisle, where the bays are */
+    quad(pt(Xin,0,Z0),pt(Xin,RH,Z0),pt(Xin,RH,Z1),pt(Xin,0,Z1));
+    ax.fillStyle='#131110'; ax.fill();
+    const isHov=hov&&hov.side===side&&hov.i===i;
+    ax.strokeStyle=rgba(CL.brass,isHov?.55:.16+.16*d); ax.lineWidth=isHov?1.3:1; ax.stroke();
+    /* bays */
+    let nNew=0;
+    for(let b=0;b<NB;b++){
+      const jt=JIT[((side>0?NR:0)+i)*NB+b];
+      const rel=(zc-F)+jt;
+      const up=clamp(Math.abs(rel)/TRANS,0,1), isNew=rel>0;
+      if(isNew&&up>.5)nNew++;
+      const col=isNew?CL.ice:CL.am;
+      const [y0,y1]=bayY(b);
+      const zp0=Z0+0.07, zp1=Z1-0.05;
+      quad(pt(Xin,y0,zp0),pt(Xin,y1,zp0),pt(Xin,y1,zp1),pt(Xin,y0,zp1));
+      ax.fillStyle=rgba(col,(0.035+0.10*up)*(0.5+0.5*d)*(isHov?1.5:1)); ax.fill();
+      ax.strokeStyle=rgba(CL.line,.5*d); ax.lineWidth=.7; ax.stroke();
+      /* the status light at the near end of the bay */
+      const zl0=Z0+0.09, zl1=Z0+0.09+(Z1-Z0)*0.13;
+      quad(pt(Xin,y0,zl0),pt(Xin,y1,zl0),pt(Xin,y1,zl1),pt(Xin,y0,zl1));
+      ax.fillStyle=up<.06?rgba(CL.faint,.22*d+.05)
+        :rgba(col,(0.30+0.66*up)*(0.45+0.55*d)); ax.fill()}
+    return nNew}
+
+  function drawFront(F){
+    if(F<-TRANS||F>ZMAX+PITCH)return;
+    const top=RH*1.22;
+    const a=pt(-AW,0,F), b=pt(-AW,top,F), c=pt(AW,top,F), e=pt(AW,0,F);
+    const g=ax.createLinearGradient(0,b[1],0,a[1]);
+    g.addColorStop(0,rgba(CL.am,0)); g.addColorStop(.55,rgba(CL.am,.13)); g.addColorStop(1,rgba(CL.am,.30));
+    quad(a,b,c,e); ax.fillStyle=g; ax.fill();
+    ax.strokeStyle=rgba(CL.am,.75); ax.lineWidth=1.6; seg(a,e);
+    ax.strokeStyle=rgba(CL.am,.20); ax.lineWidth=5; seg(a,e)}
+
+  function drawFloor(){
+    ax.lineWidth=1;
+    for(let i=0;i<=NR;i++){const z=i*PITCH;
+      ax.strokeStyle=rgba(CL.brass,.09*(1-i/NR)+.03);
+      seg(pt(-AW,0,z),pt(AW,0,z))}
+    ax.strokeStyle=rgba(CL.brass,.13);
+    seg(pt(-AW,0,0),pt(-AW,0,ZMAX+PITCH));
+    seg(pt(AW,0,0),pt(AW,0,ZMAX+PITCH));
+    ax.strokeStyle=rgba(CL.brass,.06);
+    seg(pt(0,0,0),pt(0,0,ZMAX+PITCH));
+    /* cable tray overhead — two runs to the vanishing point */
+    ax.strokeStyle=rgba(CL.brass,.10);
+    const ty=RH+0.36;
+    seg(pt(-AW*0.66,ty,0),pt(-AW*0.66,ty,ZMAX+PITCH));
+    seg(pt(AW*0.66,ty,0),pt(AW*0.66,ty,ZMAX+PITCH));
+    ax.strokeStyle=rgba(CL.brass,.07);
+    for(let i=0;i<=NR;i+=2)seg(pt(-AW*0.66,ty,i*PITCH),pt(AW*0.66,ty,i*PITCH))}
+
+  function drawSource(F){
+    const Z=ZMAX+PITCH*0.92, hgt=0.66;
+    quad(pt(-AW,0,Z),pt(-AW,hgt,Z),pt(AW,hgt,Z),pt(AW,0,Z));
+    ax.fillStyle='#100E0C'; ax.fill();
+    ax.strokeStyle=rgba(CL.brass,.34); ax.lineWidth=1; ax.stroke();
+    const live=clamp((ZMAX+PITCH-F)/PITCH,0,1);
+    for(let i=0;i<7;i++){
+      const x0=-AW*0.74+i*(AW*1.48/7), x1=x0+AW*1.48/7*0.62;
+      quad(pt(x0,hgt*0.30,Z),pt(x0,hgt*0.46,Z),pt(x1,hgt*0.46,Z),pt(x1,hgt*0.30,Z));
+      ax.fillStyle=rgba(CL.ice,.16+.50*live*(0.5+0.5*Math.sin(i*1.7))); ax.fill()}}
+
+  /* which rack face is under the pointer — nearest first */
+  function inQuad(px,py,q){
+    let c=false;
+    for(let i=0,j=3;i<4;j=i++){
+      const xi=q[i][0],yi=q[i][1],xj=q[j][0],yj=q[j][1];
+      if(((yi>py)!==(yj>py))&&(px<(xj-xi)*(py-yi)/(yj-yi)+xi))c=!c}
+    return c}
+  function pick(px,py){
+    for(let i=0;i<NR;i++)for(const side of [-1,1]){
+      const Xin=side*AW, Z0=i*PITCH, Z1=Z0+PITCH-GAP;
+      if(inQuad(px,py,[pt(Xin,0,Z0),pt(Xin,RH,Z0),pt(Xin,RH,Z1),pt(Xin,0,Z1)]))
+        return {side,i}}
+    return null}
+
+  cv.addEventListener('pointermove',e=>{
+    const r=cv.getBoundingClientRect();
+    mtX=(e.clientX-r.left)/r.width-0.5; mtY=(e.clientY-r.top)/r.height-0.5; hasPtr=true;
+    hov=pick(e.clientX-r.left,e.clientY-r.top)});
+  cv.addEventListener('pointerleave',()=>{hasPtr=false;mtX=0;mtY=0;hov=null});
+
+  function prog(){
+    const r=cv.getBoundingClientRect(), vh=innerHeight||1;
+    return clamp((vh*1.06-(r.top+r.height/2))/(vh*0.76),0,1)}
+
   register(()=>{
-    const r=sec.getBoundingClientRect();
-    const p=clamp((innerHeight*0.92-r.top)/(innerHeight*0.72),0,1);
-    const val=lerp(START,TARGET,easeIO(p));
-    shown=lerp(shown,val,.16);
-    const s=shown.toFixed(1).padStart(5,'0');
-    digits[0].textContent=s[0];digits[1].textContent=s[1];digits[2].textContent=s[2];digits[3].textContent=s[4];
-    $('#nixbar').style.width=(p*100)+'%';
-    $('#nixstate').innerHTML= p>.985 ? 'NODE UP · <b>20.7 s</b>' : (p>.05?'MEASURING…':'SCROLL TO MEASURE');
-  },{every:2,el:sec});
+    if(!W)size();
+    p=lerp(p,prog(),.16);
+    if(!RM){camX=lerp(camX,mtX*0.30,.07); camY=lerp(camY,-mtY*0.16,.07)}
+    const F=lerp(ZMAX+PITCH*1.4,-TRANS*1.6,p);
+    ax.clearRect(0,0,W,H);
+    drawFloor(); drawSource(F);
+    let done=0, crossed=false;
+    for(let i=NR-1;i>=0;i--){
+      const zc=i*PITCH+(PITCH-GAP)/2;
+      if(!crossed&&zc<=F){drawFront(F);crossed=true}
+      done+=drawRack(-1,i,F); done+=drawRack(1,i,F)}
+    if(!crossed)drawFront(F);
+    /* a soft vignette so the aisle sits in the panel rather than in a box */
+    ax.globalCompositeOperation='destination-out';
+    const gg=ax.createLinearGradient(0,0,0,H);
+    gg.addColorStop(0,'rgba(0,0,0,.55)');gg.addColorStop(.16,'rgba(0,0,0,0)');
+    gg.addColorStop(.90,'rgba(0,0,0,0)');gg.addColorStop(1,'rgba(0,0,0,.5)');
+    ax.fillStyle=gg; ax.fillRect(0,0,W,H);
+    ax.globalCompositeOperation='source-over';
+    if(readEl){
+      readEl.innerHTML = hov
+        ? `rack <b>${hov.side<0?'A':'B'}${String(hov.i+1).padStart(2,'0')}</b> · ${NB} bays · root `+
+          `<b>${(hov.i*PITCH+(PITCH-GAP)/2)>F?IMG_NEW:IMG_OLD}</b>`
+        : `<b>${done}</b>/${NR*2*NB} bays on ${IMG_NEW}`}
+  },{every:2,el:cv});
 })();
 
-/* ===================== IT — FLEET SYNC ===================== */
-(function FLEET(){
-  const grid=$('#fgrid'),N=64,hosts=[];
-  for(let i=0;i<N;i++){const d=document.createElement('div');d.className='host';
-    d.title='host-'+String(i+1).padStart(2,'0');grid.append(d);hosts.push(d)}
-  function count(){const c=hosts.filter(h=>h.classList.contains('sync')).length;
-    $('#fleetread').innerHTML='<b>'+c+'</b>/64 converged'}
-  const drift=()=>{hosts.forEach(h=>{h.classList.remove('sync','wave');
-    if(Math.random()<.62)h.classList.add('drift')});count()};
-  drift();
-  let running=false;
-  $('#driftbtn').onclick=()=>{if(!running)drift()};
-  $('#applyplaybook').onclick=()=>{
-    if(running)return;running=true;$('#applyplaybook').disabled=true;
-    const cols=16;
-    for(let c=0;c<cols;c++)setTimeout(()=>{
-      hosts.forEach((h,i)=>{if(i%cols!==c)return;h.classList.add('wave');
-        setTimeout(()=>{h.classList.remove('wave','drift');h.classList.add('sync');count()},240)});
-      if(c===cols-1)setTimeout(()=>{running=false;$('#applyplaybook').disabled=false},640)},c*105)};
+/* ===================== IT — CONFIG FACET LATTICE =====================
+   Every host is a short stack of config facets — packages, services, firewall,
+   users, mounts. Unmanaged, each facet sits at its own offset from the declared
+   position. Scrolling runs the playbook across the lattice as a front; as it
+   passes a host, that host's facets slide onto the declared line and settle.
+   Hovering holds a host up and names what was off. Nothing is clickable. */
+(function LATTICE(){
+  const cv=$('#lattice'); if(!cv)return;
+  const lx=cv.getContext('2d'), readEl=$('#fleetread');
+  const FACETS=['packages','services','firewall','users','mounts'];
+  const NF=FACETS.length;
+  let COLS=12, ROWS=4, N=COLS*ROWS;
+  let W=0,H=0,dpr=1,p=0,hov=-1;
+
+  let sd=91; const rr=()=>{sd=(sd*9301+49297)%233280;return sd/233280};
+  let HOSTS=[];
+  function build(){
+    sd=91; HOSTS=[];
+    for(let i=0;i<N;i++){
+      const off=[],bad=[];
+      for(let f=0;f<NF;f++){
+        const drift=rr()<0.42;
+        bad.push(drift); off.push(drift?((rr()*2-1)||.4)*0.95:0)}
+      HOSTS.push({off,bad})}}
+
+  function size(){
+    dpr=Math.min(2,devicePixelRatio||1);
+    const r=cv.getBoundingClientRect(); W=r.width; H=r.height;
+    cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr);
+    lx.setTransform(dpr,0,0,dpr,0,0);
+    const want=W<560?6:W<820?8:12;
+    if(want!==COLS){COLS=want;ROWS=W<560?8:W<820?6:4;N=COLS*ROWS;build()}}
+  build(); size(); addEventListener('resize',size);
+
+  const cell=()=>({w:W/COLS,h:H/ROWS});
+  const phase=i=>{const c=i%COLS,r=(i/COLS)|0;
+    return (COLS<2?0:c/(COLS-1))*0.88+(ROWS<2?0:r/(ROWS-1))*0.12};
+  const BAND=0.22;
+  const conv=i=>clamp((front()-phase(i))/BAND,0,1);
+  let FR=0;
+  const front=()=>FR;
+
+  cv.addEventListener('pointermove',e=>{
+    const r=cv.getBoundingClientRect();
+    const {w,h}=cell();
+    const c=Math.floor((e.clientX-r.left)/(r.width/COLS));
+    const rw=Math.floor((e.clientY-r.top)/(r.height/ROWS));
+    hov=(c>=0&&c<COLS&&rw>=0&&rw<ROWS)?rw*COLS+c:-1});
+  cv.addEventListener('pointerleave',()=>{hov=-1});
+
+  function prog(){
+    const r=cv.getBoundingClientRect(), vh=innerHeight||1;
+    return clamp((vh*1.02-(r.top+r.height/2))/(vh*0.70),0,1)}
+
+  register(t=>{
+    if(!W)size();
+    p=lerp(p,prog(),.16);
+    FR=p*(1+BAND*2)-BAND;
+    const {w,h}=cell();
+    lx.clearRect(0,0,W,H);
+    const fw=Math.min(w*0.54,42), fh=Math.max(2.4,Math.min(h*0.075,4.2)), fg=fh+2.2;
+    const stackH=NF*fg-2.2, amp=Math.min(w*0.22,15);
+    let converged=0;
+    for(let i=0;i<N;i++){
+      const c=i%COLS, r=(i/COLS)|0;
+      const cxp=c*w+w/2, cyp=r*h+h/2;
+      const k=conv(i), fl=Math.sin(clamp(k,0,1)*Math.PI);
+      if(k>.985)converged++;
+      const isHov=i===hov;
+      if(isHov){lx.fillStyle=rgba(CL.ink,.035);
+        lx.fillRect(c*w+1,r*h+1,w-2,h-2)}
+      /* the declared line the facets are pulled onto */
+      lx.strokeStyle=rgba(CL.brass,isHov?.30:.11); lx.lineWidth=1;
+      lx.beginPath();lx.moveTo(cxp-fw/2,cyp-stackH/2-3);
+      lx.lineTo(cxp-fw/2,cyp+stackH/2+3);lx.stroke();
+      for(let f=0;f<NF;f++){
+        const H0=HOSTS[i]||{off:[],bad:[]};
+        const dx=(H0.off[f]||0)*amp*(1-k);
+        const y=cyp-stackH/2+f*fg;
+        const col=k>.5?CL.ice:CL.am;
+        const a=(H0.bad[f]?.55:.30)+.40*k;
+        lx.fillStyle=rgba(col,a*(isHov?1.25:1));
+        lx.fillRect(cxp-fw/2+dx,y,fw,fh);
+        if(fl>.04&&H0.bad[f]){
+          lx.strokeStyle=rgba(CL.am,.7*fl);lx.lineWidth=1;
+          lx.strokeRect(cxp-fw/2+dx-1.5,y-1.5,fw+3,fh+3)}}}
+    /* the playbook front */
+    const fx0=(FR-0*0.12)/0.88, fx1=(FR-0.12)/0.88;
+    lx.strokeStyle=rgba(CL.am,.55); lx.lineWidth=1.4;
+    lx.beginPath(); lx.moveTo(fx0*W,0); lx.lineTo(fx1*W,H); lx.stroke();
+    lx.strokeStyle=rgba(CL.am,.13); lx.lineWidth=9;
+    lx.beginPath(); lx.moveTo(fx0*W,0); lx.lineTo(fx1*W,H); lx.stroke();
+    if(readEl){
+      if(hov>=0&&HOSTS[hov]){
+        const bad=FACETS.filter((_,f)=>HOSTS[hov].bad[f]);
+        readEl.innerHTML=`<b>host-${String(hov+1).padStart(2,'0')}</b> · `+
+          (bad.length?`${bad.join(', ')} ${conv(hov)>.5?'→ converged':'drifted'}`:'already at declared state')}
+      else readEl.innerHTML=`<b>${converged}</b>/${N} converged · ${NF} facets each`}
+  },{every:2,el:cv});
 })();
 
-/* ===================== RESEARCH — TRACES → FEATURE SPACE ===================== */
 (function SIDECHANNEL(){
   const trc=$('#trace'),tx=trc.getContext('2d');
   const ftc=$('#feat'),fx=ftc.getContext('2d');
   const NS=2500, ROUNDS=17, SPACING=141, START=118;
   let TW=0,TH=0,FW=0,FH=0,dpr=1,SEL=0,HOVF=null,sweep=0;
-<<<<<<< HEAD
   let SET=[],TROJ=0,detT=0,seed=7,THR=2.6,FSCALE=3.4,BRAD=0.5;
-=======
-  let SET=[],TROJ=0,detected=false,detT=0,seed=7;
-  let P0X=0,P1X=1,P0Y=0,P1Y=1,CEN_X=.5,CEN_Y=.5,SIG_X=.1,SIG_Y=.1;
->>>>>>> parent of bab2a43 (MOD: UI elements overhault)
   const rr=()=>{seed=(seed*9301+49297)%233280;return seed/233280};
 
   /* --- trace model: 50 mW baseline ripple + 17 AES round events --- */
@@ -483,7 +590,7 @@ $$('.reveal').forEach(el=>new IntersectionObserver(es=>es.forEach(e=>{
     return n?(slow/Math.max(1e-6,fast)):1}
 
   function build(){
-    seed=(Date.now()%9791)+13; SET=[];detected=false;detT=0;
+    seed=(Date.now()%9791)+13; SET=[];detT=0;
     for(let i=0;i<54;i++){const P=mkParams();P.trig=false;SET.push(P)}
     TROJ=Math.floor(rr()*54);
     SET[TROJ].trig=true; SET[TROJ].gain+=5.6; SET[TROJ].off+=0.30;
@@ -500,7 +607,6 @@ $$('.reveal').forEach(el=>new IntersectionObserver(es=>es.forEach(e=>{
     norm('f1'); norm('f2'); norm('f3');
     SET.forEach(P=>{P.d=Math.hypot(P.f1n,P.f2n,P.f3n);
       P.score=Math.min(.99,1-Math.exp(-Math.max(0,P.d-1.15)/1.9))});
-<<<<<<< HEAD
     /* the boundary sits just outside the furthest ordinary trace, the way a
        fitted detector's does — snug on the crowd, and still well inside the one
        it ranks first */
@@ -514,15 +620,6 @@ $$('.reveal').forEach(el=>new IntersectionObserver(es=>es.forEach(e=>{
     FSCALE=Math.max(...SET.map(P=>Math.hypot(P.ux,P.uy,P.uz)))*1.13||1;
     BRAD=Math.pow(THR,0.62)/FSCALE;
     SEL=TROJ}
-=======
-    SEL=TROJ;
-    $('#selinfo').innerHTML=cget('research.selinfoIdle')||''}
-
-  function info(P){
-    $('#selinfo').innerHTML=`trace <b>AES-${P.id}</b> · mean dynamic power <b>${P.fx.toFixed(2)} mW</b> · `+
-      `EM band <b>${P.fy.toFixed(2)}</b> · outlier score `+
-      (detected&&P.i===TROJ?`<b class="r">${P.score.toFixed(2)} — flagged</b>`:`<b>${P.score.toFixed(2)}</b>`)}
->>>>>>> parent of bab2a43 (MOD: UI elements overhault)
 
   function size(){dpr=Math.min(2,devicePixelRatio||1);
     let r=trc.getBoundingClientRect();TW=r.width;TH=r.height;
@@ -799,7 +896,6 @@ $$('.reveal').forEach(el=>new IntersectionObserver(es=>es.forEach(e=>{
 
   function drawFeat(t){
     fx.clearRect(0,0,FW,FH);
-<<<<<<< HEAD
     if(!SET.length)return;
     const rad=BRAD;
     fx.lineWidth=1; fx.setLineDash([2,4]);
@@ -835,55 +931,6 @@ $$('.reveal').forEach(el=>new IntersectionObserver(es=>es.forEach(e=>{
     if(re)re.innerHTML = detT>.5
       ? `<b class="r">${out}</b> of ${SET.length} outside the boundary`
       : `${SET.length} traces · one point each`;
-=======
-    const gx=FPL,gy=FPT,gw=FW-FPL-FPR,gh=FH-FPT-FPB;
-    fx.strokeStyle=rgba(CL.ink,.05);fx.lineWidth=1;
-    fx.font='8.5px "JetBrains Mono",monospace';
-    const NT=FW<420?2:4;
-    for(let i=0;i<=NT;i++){
-      const xx=gx+i/NT*gw, yy=gy+i/NT*gh;
-      fx.beginPath();fx.moveTo(xx,gy);fx.lineTo(xx,gy+gh);fx.stroke();
-      fx.beginPath();fx.moveTo(gx,yy);fx.lineTo(gx+gw,yy);fx.stroke()}
-    fx.strokeStyle=rgba(CL.faint,.4);
-    fx.beginPath();fx.moveTo(gx,gy);fx.lineTo(gx,gy+gh);fx.lineTo(gx+gw,gy+gh);fx.stroke();
-    fx.fillStyle=rgba(CL.faint,.9);fx.textAlign='center';fx.textBaseline='top';
-    for(let i=0;i<=NT;i++){fx.fillText((P0X+(P1X-P0X)*i/NT).toFixed(1),gx+i/NT*gw,gy+gh+5)}
-    fx.textAlign='right';fx.textBaseline='middle';
-    for(let i=0;i<=NT;i++){fx.fillText((P0Y+(P1Y-P0Y)*i/NT).toFixed(2),gx-5,gy+gh-i/NT*gh)}
-    /* inlier hull: contour rings around the centroid, drawn once detected */
-    const sx=SIG_X, sy=SIG_Y;
-    const cxp=gx+CEN_X*gw, cyp=gy+(1-CEN_Y)*gh;
-    if(detT>.004){
-      [1,2,3].forEach((k,j)=>{
-        fx.strokeStyle=rgba(CL.ice,(.26-j*.06)*detT);fx.lineWidth=1;fx.setLineDash([4,4]);
-        fx.beginPath();fx.ellipse(cxp,cyp,sx*gw*k,sy*gh*k,0,0,TAU);fx.stroke();fx.setLineDash([])});
-      fx.fillStyle=rgba(CL.ice,.8*detT);fx.beginPath();fx.arc(cxp,cyp,3,0,TAU);fx.fill();
-      fx.fillStyle=rgba(CL.faint,.9*detT);fx.textAlign='left';fx.textBaseline='alphabetic';
-      fx.fillText('3σ',cxp+sx*gw*3+5,cyp-4)}
-    /* points */
-    SET.forEach(P=>{
-      const p=fpos(P), isT=P.i===TROJ, sel=P.i===SEL, k=isT?detT:0;
-      if(k>.004){const pulse=(Math.sin(t*2.4)+1)/2;
-        fx.strokeStyle=rgba(CL.red,.30*k);fx.setLineDash([3,3]);fx.lineWidth=1;
-        fx.beginPath();fx.moveTo(cxp,cyp);fx.lineTo(p.x,p.y);fx.stroke();fx.setLineDash([]);
-        fx.strokeStyle=rgba(CL.red,(.5+pulse*.5)*k);fx.lineWidth=1.4;
-        fx.beginPath();fx.arc(p.x,p.y,9+pulse*4,0,TAU);fx.stroke()}
-      if(sel){fx.strokeStyle=rgba(k>.5?CL.red:CL.am,.9);fx.lineWidth=1.3;
-        fx.beginPath();fx.arc(p.x,p.y,7,0,TAU);fx.stroke()}
-      fx.fillStyle=k>.004
-        ?`rgba(${Math.round(lerp(111,255,k))},${Math.round(lerp(200,74,k))},${Math.round(lerp(240,69,k))},${(.55+.4*k).toFixed(2)})`
-        :rgba(CL.ice,.55-detT*.25+P.score*.5*detT);
-      fx.beginPath();fx.arc(p.x,p.y,isT?2.9+1.3*k:2.9,0,TAU);fx.fill()});
-    if(flashT>0){const p=fpos(SET[SEL]);
-      const a=flashT*flashT;
-      fx.strokeStyle=rgba(SEL===TROJ&&detT>.5?CL.red:CL.am,.85*a);fx.lineWidth=1.4;
-      fx.beginPath();fx.arc(p.x,p.y,5+34*(1-a),0,TAU);fx.stroke()}
-    if(detT>.35){const p=fpos(SET[TROJ]);
-      fx.fillStyle=rgba(CL.red,.95*clamp((detT-.35)/.45,0,1));fx.font='700 8.5px "JetBrains Mono",monospace';
-      fx.textAlign=p.x>FW*.6?'right':'left';fx.textBaseline='alphabetic';
-      fx.fillText('AES-'+SET[TROJ].id+' · 0.'+String(Math.round(SET[TROJ].score*100)).padStart(2,'0'),
-        p.x+(p.x>FW*.6?-13:13),p.y-9)}
->>>>>>> parent of bab2a43 (MOD: UI elements overhault)
   }
 
   /* drag to turn, hover to pick — no clicks */
@@ -909,14 +956,13 @@ $$('.reveal').forEach(el=>new IntersectionObserver(es=>es.forEach(e=>{
     if(best&&bd<18)SEL=best.i}
 
   register(t=>{
-    detT+=((detected?1:0)-detT)*(detected?.055:.11);
+    const dgt=(()=>{const r=ftc.getBoundingClientRect(), vh=innerHeight||1;
+      return clamp((vh*0.95-(r.top+r.height*0.5))/(vh*0.40),0,1)})();
+    detT=lerp(detT,dgt,.075);
     if(detT<.0015)detT=0; if(detT>.9985)detT=1;
-<<<<<<< HEAD
     if(!drag){rotY+=velY;rotX=clamp(rotX+velX,-.9,.9);velY*=.93;velX*=.90;
       if(!RM)rotY+=0.0016}
     pickFeat();
-=======
->>>>>>> parent of bab2a43 (MOD: UI elements overhault)
     sweep=lerp(sweep,sweepProgress(),.20);
     const full=sweep>0.995;
     if(full&&!wasFull)flashT=1;
@@ -925,11 +971,4 @@ $$('.reveal').forEach(el=>new IntersectionObserver(es=>es.forEach(e=>{
     buildGhost();
     drawTrace();drawFeat(t)},{every:2,el:trc});
 
-  $('#detect').onclick=()=>{detected=true;SEL=TROJ;info(SET[TROJ]);
-    $('#selinfo').innerHTML=(cget('research.selinfoDetected')||'').replace('{id}',SET[TROJ].id)};
-  $('#reseed').onclick=()=>{
-    detected=false;build();size();
-    RING.sel=-1; GHOST=null; ghostKey=''; buildGhost();
-    flashT=0; wasFull=false;
-    drawTrace()};
 })();
