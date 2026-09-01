@@ -57,7 +57,7 @@ window.CONTENT = {
 
   /* ---------- 2. keyword space ---------- */
   skills: {
-    eyebrow: "Keyword space",
+    eyebrow: "My Skills",
     heading: "What I actually work with",
     sublede: "My experience spans both</span> High-Performance Computing / Systems Administration and Machine Learning Research. Everything below are the skills that I have developed so far as a result.</span>",
 
