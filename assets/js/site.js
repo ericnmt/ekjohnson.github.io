@@ -349,7 +349,7 @@ $$('.reveal').forEach(el=>new IntersectionObserver(es=>es.forEach(e=>{
     /* the plane is a suggestion at the far end and a solid wall by the time it
        reaches the front of the aisle; then it passes the viewer and clears */
     const adv=clamp((ZMAX-F)/Math.max(1e-6,ZMAX),0,1);
-    const exit=clamp(-F/(TRANS*1.5),0,1);
+    const exit=clamp((PITCH*0.55-F)/(TRANS*1.5),0,1);
     const A=(0.10+0.88*adv*adv)*(1-exit);
     if(A<=0.004)return;
     const top=RH*1.22;
