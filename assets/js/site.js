@@ -345,14 +345,22 @@ $$('.reveal').forEach(el=>new IntersectionObserver(es=>es.forEach(e=>{
     return nNew}
 
   function drawFront(F){
-    if(F<-TRANS||F>ZMAX+PITCH)return;
+    if(F<-TRANS*2.0||F>ZMAX+PITCH)return;
+    /* the plane is a suggestion at the far end and a solid wall by the time it
+       reaches the front of the aisle; then it passes the viewer and clears */
+    const adv=clamp((ZMAX-F)/Math.max(1e-6,ZMAX),0,1);
+    const exit=clamp(-F/(TRANS*1.5),0,1);
+    const A=(0.10+0.88*adv*adv)*(1-exit);
+    if(A<=0.004)return;
     const top=RH*1.22;
     const a=pt(-AW,0,F), b=pt(-AW,top,F), c=pt(AW,top,F), e=pt(AW,0,F);
     const g=ax.createLinearGradient(0,b[1],0,a[1]);
-    g.addColorStop(0,rgba(CL.am,0)); g.addColorStop(.55,rgba(CL.am,.13)); g.addColorStop(1,rgba(CL.am,.30));
+    g.addColorStop(0,rgba(CL.am,A*0.10));
+    g.addColorStop(.5,rgba(CL.am,A*0.55));
+    g.addColorStop(1,rgba(CL.am,A));
     quad(a,b,c,e); ax.fillStyle=g; ax.fill();
-    ax.strokeStyle=rgba(CL.am,.75); ax.lineWidth=1.6; seg(a,e);
-    ax.strokeStyle=rgba(CL.am,.20); ax.lineWidth=5; seg(a,e)}
+    ax.strokeStyle=rgba(CL.am,Math.min(1,(.55+.45*adv)*(1-exit))); ax.lineWidth=1.6; seg(a,e);
+    ax.strokeStyle=rgba(CL.am,.22*(1-exit)); ax.lineWidth=5; seg(a,e)}
 
   function drawFloor(){
     ax.lineWidth=1;
@@ -647,7 +655,7 @@ $$('.reveal').forEach(el=>new IntersectionObserver(es=>es.forEach(e=>{
 
   function cam(){
     const Rx=Math.min(TW*(TW<760?0.385:0.300),TH*0.74), Ry=Rx*TILT;
-    return {cx:TW/2, cy:TH*0.50, Rx, Ry, R:Rx, A:Rx*AMPF}}
+    return {cx:TW/2, cy:TH*0.36, Rx, Ry, R:Rx, A:Rx*AMPF}}
 
   /* a point in the ring's plane: a across, b into the frame, h standing up off it.
      k is the depth factor — small at the back, large at the front. */

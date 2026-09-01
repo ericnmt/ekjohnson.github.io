@@ -68,11 +68,11 @@ window.CONTENT = {
       ["MPI", "hpc"], ["HPL", "hpc"], ["Slurm", "hpc"], ["OpenCHAMI", "hpc"],
       ["parallel benchmarking", "hpc"], ["containers", "hpc"], ["hypervisors", "hpc"],
       ["Rocky Linux", "hpc"], ["Podman", "hpc"], ["node reprovisioning", "hpc"],
+      ["Bash", "hpc"],
 
       ["Ansible", "it"], ["GitLab CI/CD", "it"], ["Red Hat Satellite", "it"],
       ["Hyper-V", "it"], ["PowerShell", "it"], ["systemd-nspawn", "it"],
-      ["Docker", "it"], ["RHEL", "it"], ["documentation", "it"], ["Bash", "it"],
-      ["SQL", "it"],
+      ["Docker", "it"], ["RHEL", "it"], ["documentation", "it"], ["SQL", "it"],
 
       ["PyOD", "research"], ["PyTorch", "research"], ["anomaly detection", "research"],
       ["side-channel", "research"], ["CNNs", "research"], ["Hugging Face", "research"],
