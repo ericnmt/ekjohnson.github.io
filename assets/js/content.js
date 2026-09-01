@@ -17,9 +17,9 @@ window.CONTENT = {
   /* ---------- page + browser tab ---------- */
   site: {
     title:       "Eric Johnson",
-    description: "Computer Scince undergraduate. High-Performance Computing, infrastructure automation, and hardware trojan detection machine learning research.",
+    description: "Computer science undergraduate. High-performance computing, infrastructure automation, and side-channel machine learning research.",
     footerLeft:  "Eric Johnson",
-    footerRight: "2026",
+    footerRight: "New Mexico Tech",
     footerNote:  ""                    /* right-hand footer note; leave "" for none */
   },
 
@@ -38,32 +38,32 @@ window.CONTENT = {
     { id: "skills",   label: "Keyword space",              ratio: [4, 3] },
     { id: "resume",   label: "Resume",                     ratio: [5, 3] },
     { id: "hpc",      label: "High-Performance Computing", ratio: [5, 4] },
-    { id: "it",       label: "IT Systems Automation",     ratio: [7, 5] },
+    { id: "it",       label: "IT Systems Engineering",     ratio: [7, 5] },
     { id: "research", label: "Hardware Trojan research",   ratio: [9, 7] }
   ],
 
   /* ---------- 1. opening ---------- */
   hero: {
-    /* eyebrow: "Computer science undergraduate",
-    badge:   "Available summer 2027", */
+    eyebrow: "Computer science undergraduate",
+    badge:   "Available summer 2027",
     name:    "Eric Johnson",
     role: [
-      "<b>B.S. in CS undergrad</b> · Data Science minor",
-      "<b>New Mexico Institute of Mining & Technology</b>"
+      "<b>CS undergrad</b> · Data Science minor",
+      "New Mexico Tech · <b>3.8 GPA</b>",
+      "Class of <b>2028</b>"
     ],
-    bio: "Three years at <b>Los Alamos National Laboratory</b> across HPC and infrastructure automation, plus applied research experience in Machine Learning at <b>New Mexico Tech</b> as part of the <b>Intel Undergraduate Research Program</b>. <span>I have experience in cluster provisioning, automation in the environments they live in, and most recently am looking into hardware Trojans using side-channel signal traces with Deep Learning algorithms. </span>I am seeking a summer 2027 undergraduate internship in Artificial Intelligence, Machine Learning, or High-Performance Computing."
-
+    bio: "Three years at <b>Los Alamos National Laboratory</b> across HPC and infrastructure engineering, plus applied research in machine learning. <span>I provision clusters, automate the environments they live in, and — most recently — look for hardware Trojans in side-channel traces. Seeking a summer 2027 undergraduate internship with CAI in applied computer science.</span>"
   },
 
   /* ---------- 2. keyword space ---------- */
   skills: {
-    eyebrow: "My skills",
-    hint:    "drag to rotate · click to jump to relevant project",
+    eyebrow: "Keyword space",
+    hint:    "drag to rotate · hover for neighbours · click to jump",
     heading: "What I actually work with",
-    sublede: "My experience spans both</span> High-Performance Computing / Sytems Administration and Machine Learning Research. Below are the skills that I have deleoped as a result.</span>",
+    sublede: "Every keyword is drawn from the resume and sits in a rotating three-dimensional projection, clustered by the work it belongs to. Depth is real — near terms are larger and brighter. Hovering one holds the rotation and draws its nearest neighbours with distances.",
     legendA: "HPC &amp; infrastructure",
     legendB: "Research &amp; ML",
-    readout: "",
+    readout: "30 keywords · 3 clusters · hover to trace co-occurrence",
 
     /* Each entry is [ "the words on the pill", "which cluster" ].
        The cluster must be one of: "hpc", "it", "research".
@@ -71,16 +71,16 @@ window.CONTENT = {
     keywords: [
       ["MPI", "hpc"], ["HPL", "hpc"], ["Slurm", "hpc"], ["OpenCHAMI", "hpc"],
       ["parallel benchmarking", "hpc"], ["containers", "hpc"], ["hypervisors", "hpc"],
-      ["Rocky Linux", "hpc"], ["Podman", "hpc"], ["node reprovisioning", "hpc"], ["systemd-nspawn", "hpc"]
+      ["Rocky Linux", "hpc"], ["Podman", "hpc"], ["node reprovisioning", "hpc"],
 
       ["Ansible", "it"], ["GitLab CI/CD", "it"], ["Red Hat Satellite", "it"],
-      ["Hyper-V", "it"], ["PowerShell", "it"],
+      ["Hyper-V", "it"], ["PowerShell", "it"], ["systemd-nspawn", "it"],
       ["Docker", "it"], ["RHEL", "it"], ["documentation", "it"], ["Bash", "it"],
       ["SQL", "it"],
 
       ["PyOD", "research"], ["PyTorch", "research"], ["anomaly detection", "research"],
-      ["side-channel", "research"], ["Hugging Face", "research"],
-      ["Keras / TF", "research"], ["Python", "research"], ["R", "research"], /* ["CNNs", "research"] */
+      ["side-channel", "research"], ["CNNs", "research"], ["Hugging Face", "research"],
+      ["Keras / TF", "research"], ["Python", "research"], ["R", "research"]
     ]
   },
 
@@ -90,7 +90,7 @@ window.CONTENT = {
      Leave file as "" and the section shows an empty viewer slot instead. */
   resume: {
     eyebrow:   "Resume",
-    filename:  "",
+    filename:  "resume.pdf",
     file:      "",
     slotTitle: "Resume",
     slotHint:  "drop the PDF into assets/pdf/ and name it in content.js"
@@ -98,21 +98,15 @@ window.CONTENT = {
 
   /* ---------- 4. HPC internship ---------- */
   hpc: {
-    eyebrow: "Los Alamos National Laboratory (LANL)",
-    meta:    "Supercomputer Institute · May 2026 – August 2026",
+    eyebrow: "Experience — LANL",
+    meta:    "Supercomputer Institute · May 2026 – present",
     heading: "High-Performance Computing Intern",
-    sublede: "Deployed and administered an HPC compute cluster with a peer team, and developed a novel boot method that reprovisions a node in seconds rather than minutes.",
+    sublede: "Deployed and administered an HPC compute cluster with a peer team, and developed a boot method that swaps a node\u2019s root image and brings it back without a full reprovision cycle.",
 
-    /* clusterTitle: "Cluster — head node + 4 chassis · 32 compute nodes", */
-    nodeInfo:     "Click any node for its state.",
-
-    clockTitle: "Achieved Reprovision time*",
-    clockNote:  "*Reprovision time results are from unofficial trials not reported",
-    facts: [
-      { value: "Virtual Switch Root", label: "containers + hypervisors" },
-      { value: "MPI · HPL",                label: "benchmarked" },
-      /* { value: "2026 Showcase",            label: "presented at LANL" } */
-    ],
+    clusterTitle: "Machine-room aisle \u2014 18 racks \u00b7 144 bays",
+    legendOld:    "current root image",
+    legendNew:    "reprovisioned root image",
+    hint:         "scroll to run the front down the aisle \u00b7 hover a rack",
 
     points: [
       "<b>Novel boot method.</b> Developed and presented a boot method leveraging containers and hypervisors to enable rapid node reprovisioning, benchmarked using MPI and HPL against traditional methods. Presented findings at LANL's 2026 HPC Intern Showcase.",
@@ -132,10 +126,13 @@ window.CONTENT = {
 
   /* ---------- 5. IT systems engineering ---------- */
   it: {
-    eyebrow: "Los Alamos National Laboratory (LANL)",
-    meta:    "June 2023 – May 2026",
-    heading: "IT Systems Automation Intern",
-    sublede: "Turned per-machine handwork into declared state. Introduce drift, then apply the playbook and watch the fleet converge.",
+    eyebrow: "Experience — LANL",
+    meta:    "Sensitive &amp; Special Operations · June 2023 – May 2026",
+    heading: "IT Systems Engineering Intern",
+    sublede: "Three years turning per-machine handwork into declared state. Every host is a stack of config facets sitting at its own offset; scrolling runs the playbook across the lattice and pulls them onto the declared line.",
+    latticeTitle: "Fleet — 48 hosts × 5 config facets",
+    legendDrift: "drifted from declared state",
+    legendSync:  "converged",
     legendNote: "illustrative — host count is not from the role",
 
     points: [
@@ -147,8 +144,8 @@ window.CONTENT = {
 
   /* ---------- 6. hardware Trojan research ---------- */
   research: {
-    eyebrow: "Intel Undergraduate Research Fellow",
-    meta:    "New Mexico Institute of Mining & Technology · Aug – Dec 2026",
+    eyebrow: "Research — Intel Undergraduate Research Fellow",
+    meta:    "NM Tech · Aug – Dec 2026",
     heading: "Golden-chip-free hardware Trojan detection",
     sublede: "Both runs of the same AES core — Trojan dormant and Trojan triggered — drawn on top of each other inside the faint bundle of the other 53 measurements. The 2,500 samples run one revolution of a ring around the package they were measured from. Scrolling carries the sweep out from behind the chip, round the near side of the ring — closer, larger, brighter — and back in behind it, so both ends of the record stay out of sight.",
 
@@ -157,18 +154,15 @@ window.CONTENT = {
     traceNote: "2,500 samples · one revolution of the package",
     flowlink:  "each trace collapses to one point",
 
-    featTitle: "Feature space — 54 measured traces",
-    axisX:     "Mean dynamic power (mW)",
-    axisY:     "EM band energy (norm.)",
+    featTitle:     "Every trace as one point",
+    legendUsual:   "inside the boundary",
+    legendUnusual: "outside it",
+    hint:          "drag to rotate · hover a point to load its trace above",
 
     points: [
       "<b>The problem.</b> Evaluating anomaly detection models from the Python Outlier Detection (PyOD) library for golden-chip-free hardware Trojan detection on power and electromagnetic side-channel traces from AES Trojan variants (Trust Hub / IEEE DataPort).",
-      "<b>Why it's hard.</b> Benchmarking detector effectiveness against classical baselines on unlabeled, imbalanced measurement data, where dormant Trojans separate from baseline circuits only by dynamic power draw."
-    ],
-
-    /* the small line under the description that changes as you use the plot.
-       {id} is replaced with the trace being pointed at. */
-    /* selinfoIdle:     "Hover a point to load its trace above. No labels and no golden reference — only the separation the detector can find on its own.",
-    selinfoDetected: "ECOD and Isolation Forest agree — <b class=\"r\">AES-{id}</b> sits outside 3&sigma; on mean dynamic power. The rounds where it draws are marked on the trace above; on the trace alone the two runs are indistinguishable." */
+      "<b>Why it\u2019s hard.</b> Benchmarking detector effectiveness against classical baselines on unlabeled, imbalanced measurement data, where dormant Trojans separate from baseline circuits only by dynamic power draw.",
+      "<b>What the space shows.</b> Each measurement reduces to a handful of numbers and becomes one point. Almost all of them fall together. The detector learns where that crowd sits, draws a boundary around it, and whatever ends up outside is what gets looked at \u2014 no labels, and no golden reference chip to compare against."
+    ]
   }
 };

@@ -159,9 +159,16 @@
 
     <div class="two">
       <div class="card pbox">
-        <h3 data-c="research.featTitle"></h3>
-        <div class="plot feat"><canvas id="feat"></canvas>
-          <span class="ax-y" data-c="research.axisY"></span><span class="ax-x" data-c="research.axisX"></span></div>
+        <div class="cardhead">
+          <h3 data-c="research.featTitle"></h3>
+          <span class="readout" id="featread"></span>
+        </div>
+        <div class="stagewrap"><canvas id="feat"></canvas></div>
+        <div class="flegend">
+          <span><i class="sw" style="background:var(--ice)"></i><span data-c="research.legendUsual"></span></span>
+          <span><i class="sw" style="background:var(--red)"></i><span data-c="research.legendUnusual"></span></span>
+          <span style="margin-left:auto" data-c="research.hint"></span>
+        </div>
       </div>
       <div class="card pbox desc">
         <div class="toolbar">
@@ -169,7 +176,6 @@
           <button class="btn ghost" id="reseed">New sample set</button>
         </div>
         <div data-c-list="research.points"></div>
-        <p class="selinfo" id="selinfo"></p>
       </div>
     </div>
   </div>

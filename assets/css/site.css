@@ -230,7 +230,21 @@ h2{font-family:var(--dsp);font-weight:700;font-variation-settings:"wdth" 108;
 .host.wave{transform:scale(1.18);background:var(--am);border-color:var(--am)}
 .flegend{display:flex;flex-wrap:wrap;gap:16px;margin-top:14px;font-family:var(--mono);font-size:10px;
   color:var(--faint);letter-spacing:.06em;align-items:center}
+<<<<<<< HEAD
+.flegend .sw{width:10px;height:10px;border-radius:2px;border:1px solid transparent;display:inline-block;vertical-align:-1px;margin-right:6px}
+.cardhead{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+.cardhead h3{margin:0}
+.cardhead .readout{margin-left:auto}
+.stagewrap{position:relative;background:rgba(14,13,12,.72);border:1px solid var(--line);
+  border-radius:3px;overflow:hidden}
+#aisle{display:block;width:100%;height:min(46vh,420px)}
+#lattice{display:block;width:100%;height:250px}
+#feat{display:block;width:100%;height:360px;cursor:grab;touch-action:pan-y}
+#feat:active{cursor:grabbing}
+@media(max-width:700px){#aisle{height:38vh}#lattice{height:300px}#feat{height:280px}}
+=======
 .flegend .sw{width:10px;height:10px;border-radius:2px;border:1px solid;display:inline-block;vertical-align:-1px;margin-right:6px}
+>>>>>>> parent of bab2a43 (MOD: UI elements overhault)
 
 /* research — abstract trace + feature space */
 .lg{font-family:var(--mono);font-size:10px;color:var(--dim);display:inline-flex;gap:6px;
@@ -243,22 +257,9 @@ h2{font-family:var(--dsp);font-weight:700;font-variation-settings:"wdth" 108;
   align-items:center;flex-wrap:wrap}
 #trace{display:block;width:100%;height:66vh;max-height:760px}
 @media(max-width:700px){#trace{height:46vh}.tracehead{padding:0 22px}}
-.plot{position:relative;background:#08080B;border:1px solid var(--line);border-radius:3px;
-  padding:8px 10px 24px 30px}
-.plot canvas{display:block;width:100%;cursor:crosshair}
-#feat{aspect-ratio:8/5}
-.ax-x{position:absolute;left:50%;bottom:5px;transform:translateX(-50%);font-family:var(--mono);
-  font-size:9.5px;color:var(--faint);letter-spacing:.08em}
-.ax-y{position:absolute;left:5px;top:50%;transform:translateY(-50%) rotate(180deg);
-  writing-mode:vertical-rl;font-family:var(--mono);font-size:9.5px;color:var(--faint);
-  letter-spacing:.08em;white-space:nowrap}
 .flowlink{display:flex;align-items:center;gap:14px;margin:14px 0 20px;font-family:var(--mono);
   font-size:10px;color:var(--faint);letter-spacing:.14em;text-transform:uppercase}
 .flowlink i{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--brass) 30%,var(--line) 70%,transparent)}
-.selinfo{font-family:var(--mono);font-size:10.5px;color:var(--dim);border-top:1px solid var(--line);
-  margin-top:14px;padding-top:11px;line-height:1.7}
-.selinfo b{color:var(--am);font-weight:500}
-.selinfo b.r{color:var(--red)}
 footer{position:relative;z-index:2;border-top:1px solid var(--line);margin-top:70px;padding:26px 0 60px;
   font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.05em;
   display:flex;flex-wrap:wrap;gap:8px 22px;align-items:center}

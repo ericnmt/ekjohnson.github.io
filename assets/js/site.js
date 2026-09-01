@@ -425,8 +425,12 @@ $$('.reveal').forEach(el=>new IntersectionObserver(es=>es.forEach(e=>{
   const ftc=$('#feat'),fx=ftc.getContext('2d');
   const NS=2500, ROUNDS=17, SPACING=141, START=118;
   let TW=0,TH=0,FW=0,FH=0,dpr=1,SEL=0,HOVF=null,sweep=0;
+<<<<<<< HEAD
+  let SET=[],TROJ=0,detT=0,seed=7,THR=2.6,FSCALE=3.4,BRAD=0.5;
+=======
   let SET=[],TROJ=0,detected=false,detT=0,seed=7;
   let P0X=0,P1X=1,P0Y=0,P1Y=1,CEN_X=.5,CEN_Y=.5,SIG_X=.1,SIG_Y=.1;
+>>>>>>> parent of bab2a43 (MOD: UI elements overhault)
   const rr=()=>{seed=(seed*9301+49297)%233280;return seed/233280};
 
   /* --- trace model: 50 mW baseline ripple + 17 AES round events --- */
@@ -467,25 +471,50 @@ $$('.reveal').forEach(el=>new IntersectionObserver(es=>es.forEach(e=>{
         prev=v }}
     if(inE&&hi>lo){pp+=hi-lo;pn++}
     return {p:(pp/Math.max(1,pn))/10, e:(hf/Math.max(1,hn))*10}}
+  /* the third axis: how much of the quiet-window movement is slow rather than fast.
+     It comes from the baseline ripple, which the payload never touches — so the
+     flagged trace is ordinary along this axis, and only steps out along the first. */
+  function feature3(P,trig){
+    let slow=0,fast=0,n=0; const h=[];
+    for(let i=1;i<NS;i+=2){
+      if(inEvent(i)){h.length=0;continue}
+      const v=sample(i,P,trig); h.push(v); if(h.length>5)h.shift();
+      if(h.length===5){slow+=Math.abs(h[4]-h[0]);fast+=Math.abs(h[4]-h[3]);n++}}
+    return n?(slow/Math.max(1e-6,fast)):1}
 
   function build(){
     seed=(Date.now()%9791)+13; SET=[];detected=false;detT=0;
     for(let i=0;i<54;i++){const P=mkParams();P.trig=false;SET.push(P)}
     TROJ=Math.floor(rr()*54);
     SET[TROJ].trig=true; SET[TROJ].gain+=5.6; SET[TROJ].off+=0.30;
-    SET.forEach(function(P,i){P.i=i;const f=features(P,P.trig);P.fx=f.p;P.fy=f.e});
-    const px=SET.map(P=>P.fx),py=SET.map(P=>P.fy);
-    const mX=(Math.max(...px)-Math.min(...px))*0.17||0.1;
-    const mY=(Math.max(...py)-Math.min(...py))*0.17||0.1;
-    P0X=Math.min(...px)-mX; P1X=Math.max(...px)+mX;
-    P0Y=Math.min(...py)-mY; P1Y=Math.max(...py)+mY;
-    SET.forEach(P=>{P.nx=(P.fx-P0X)/(P1X-P0X);P.ny=(P.fy-P0Y)/(P1Y-P0Y)});
+    SET.forEach(function(P,i){P.i=i;const f=features(P,P.trig);
+      P.f1=f.p; P.f2=f.e; P.f3=feature3(P,P.trig)});
+    /* each axis standardised on its own median and spread, so the cloud is a
+       ball rather than a streak and distance means the same thing in every
+       direction */
     const med=a=>{const b=[...a].sort((x,y)=>x-y);return b[b.length>>1]};
-    CEN_X=med(SET.map(P=>P.nx)); CEN_Y=med(SET.map(P=>P.ny));
-    SIG_X=Math.max(.11,1.4826*med(SET.map(P=>Math.abs(P.nx-CEN_X))));
-    SIG_Y=Math.max(.11,1.4826*med(SET.map(P=>Math.abs(P.ny-CEN_Y))));
-    SET.forEach(P=>{P.d=Math.hypot((P.nx-CEN_X)/SIG_X,(P.ny-CEN_Y)/SIG_Y);
+    const norm=key=>{
+      const v=SET.map(P=>P[key]), m=med(v);
+      const sg=Math.max(1e-6,1.4826*med(v.map(x=>Math.abs(x-m))));
+      SET.forEach(P=>{P[key+'n']=(P[key]-m)/sg})};
+    norm('f1'); norm('f2'); norm('f3');
+    SET.forEach(P=>{P.d=Math.hypot(P.f1n,P.f2n,P.f3n);
       P.score=Math.min(.99,1-Math.exp(-Math.max(0,P.d-1.15)/1.9))});
+<<<<<<< HEAD
+    /* the boundary sits just outside the furthest ordinary trace, the way a
+       fitted detector's does — snug on the crowd, and still well inside the one
+       it ranks first */
+    const dT=SET[TROJ].d, dRest=Math.max(...SET.filter(P=>P.i!==TROJ).map(P=>P.d));
+    THR=Math.min((dT+dRest)/2, dRest*1.16);
+    /* radius is compressed by a fixed power before drawing, purely so the flagged
+       trace stays in frame without squeezing the crowd into a dot. It is a radial
+       map, so the boundary is still a sphere and the ordering is untouched. */
+    SET.forEach(P=>{const r=Math.pow(P.d,0.62), u=P.d||1e-6;
+      P.ux=P.f1n/u*r; P.uy=P.f2n/u*r; P.uz=P.f3n/u*r});
+    FSCALE=Math.max(...SET.map(P=>Math.hypot(P.ux,P.uy,P.uz)))*1.13||1;
+    BRAD=Math.pow(THR,0.62)/FSCALE;
+    SEL=TROJ}
+=======
     SEL=TROJ;
     $('#selinfo').innerHTML=cget('research.selinfoIdle')||''}
 
@@ -493,6 +522,7 @@ $$('.reveal').forEach(el=>new IntersectionObserver(es=>es.forEach(e=>{
     $('#selinfo').innerHTML=`trace <b>AES-${P.id}</b> · mean dynamic power <b>${P.fx.toFixed(2)} mW</b> · `+
       `EM band <b>${P.fy.toFixed(2)}</b> · outlier score `+
       (detected&&P.i===TROJ?`<b class="r">${P.score.toFixed(2)} — flagged</b>`:`<b>${P.score.toFixed(2)}</b>`)}
+>>>>>>> parent of bab2a43 (MOD: UI elements overhault)
 
   function size(){dpr=Math.min(2,devicePixelRatio||1);
     let r=trc.getBoundingClientRect();TW=r.width;TH=r.height;
@@ -730,11 +760,82 @@ $$('.reveal').forEach(el=>new IntersectionObserver(es=>es.forEach(e=>{
     const r=trc.getBoundingClientRect(), vh=innerHeight||1;
     return clamp((vh*1.12-(r.top+r.height/2))/(vh*0.70),0,1)}
 
-  /* ---------- feature space ---------- */
-  const FPL=42,FPB=20,FPT=14,FPR=16;
-  function fpos(P){return {x:FPL+P.nx*(FW-FPL-FPR), y:FPT+(1-P.ny)*(FH-FPT-FPB)}}
+  /* ---------- feature space, in three dimensions ----------
+     Every measurement is reduced to three numbers and drawn as one point in a
+     slowly turning space. The crowd is what "usual" looks like; the detector
+     wraps a boundary around it as the panel comes into view, and whatever falls
+     outside is what gets looked at. Drag to turn it, hover a point to load that
+     trace into the ring above. */
+  const FOV=3.1;
+  let rotX=-0.22, rotY=0.5, velX=0, velY=0, drag=false, moved=0, lastPX=0, lastPY=0;
+  let fPtr=null;
+
+  const fp=[0,0,0,0];
+  function project(x,y,z,out){
+    const cy0=Math.cos(rotY), sy0=Math.sin(rotY);
+    const cx0=Math.cos(rotX), sx0=Math.sin(rotX);
+    let X=x*cy0+z*sy0, Z=-x*sy0+z*cy0;
+    let Y=y*cx0-Z*sx0; Z=y*sx0+Z*cx0;
+    const k=FOV/(FOV+Z);
+    const R=Math.min(FW*0.46,FH*0.52);
+    out[0]=FW/2+X*k*R; out[1]=FH/2+Y*k*R; out[2]=k; out[3]=Z; return out}
+
+  const ppos=P=>project(P.ux/FSCALE,-P.uy/FSCALE,P.uz/FSCALE,[0,0,0,0]);
+
+  /* the boundary drawn as a wireframe ball: three great circles and two rings,
+     each segment faded by its own depth so the far side sits behind the cloud */
+  function ring(axis,lat,rad,alpha){
+    const N=74, o=[0,0,0,0], prev=[0,0,0,0];
+    for(let i=0;i<=N;i++){
+      const a=i/N*TAU, c=Math.cos(a)*Math.cos(lat), sn=Math.sin(a)*Math.cos(lat), h=Math.sin(lat);
+      let x,y,z;
+      if(axis===0){x=c;y=sn;z=h} else if(axis===1){x=c;y=h;z=sn} else {x=h;y=c;z=sn}
+      project(x*rad,y*rad,z*rad,o);
+      if(i){
+        const dpt=clamp((o[3]+1.3)/2.6,0,1);
+        fx.strokeStyle=rgba(CL.ice,alpha*(0.18+0.82*(1-dpt)));
+        fx.beginPath();fx.moveTo(prev[0],prev[1]);fx.lineTo(o[0],o[1]);fx.stroke()}
+      prev[0]=o[0];prev[1]=o[1];prev[3]=o[3]}}
+
   function drawFeat(t){
     fx.clearRect(0,0,FW,FH);
+<<<<<<< HEAD
+    if(!SET.length)return;
+    const rad=BRAD;
+    fx.lineWidth=1; fx.setLineDash([2,4]);
+    if(detT>.004){
+      ring(0,0,rad,.42*detT); ring(1,0,rad,.42*detT); ring(2,0,rad,.42*detT);
+      ring(0,0.62,rad,.20*detT); ring(0,-0.62,rad,.20*detT)}
+    fx.setLineDash([]);
+    /* the centre of the crowd */
+    const c0=project(0,0,0,[0,0,0,0]);
+    fx.fillStyle=rgba(CL.ice,.35*detT);
+    fx.beginPath();fx.arc(c0[0],c0[1],2,0,TAU);fx.fill();
+    /* points, far ones first */
+    const ord=SET.map(P=>({P,q:ppos(P)})).sort((a,b)=>b.q[3]-a.q[3]);
+    let out=0;
+    for(const {P,q} of ord){
+      const isOut=P.d>THR, k=isOut?detT:0;
+      if(isOut&&detT>.5)out++;
+      const dpt=clamp((q[3]+1.3)/2.6,0,1), near=1-dpt;
+      const r=(1.9+2.6*near)*(P.i===SEL?1.5:1);
+      if(k>.02){
+        fx.strokeStyle=rgba(CL.red,.22*k);fx.setLineDash([3,4]);fx.lineWidth=1;
+        fx.beginPath();fx.moveTo(c0[0],c0[1]);fx.lineTo(q[0],q[1]);fx.stroke();fx.setLineDash([]);
+        const pulse=(Math.sin(t*2.2)+1)/2;
+        fx.strokeStyle=rgba(CL.red,(.45+.45*pulse)*k);fx.lineWidth=1.3;
+        fx.beginPath();fx.arc(q[0],q[1],r+5+pulse*4,0,TAU);fx.stroke()}
+      if(P.i===SEL){fx.strokeStyle=rgba(k>.5?CL.red:CL.am,.85);fx.lineWidth=1.2;
+        fx.beginPath();fx.arc(q[0],q[1],r+4.5,0,TAU);fx.stroke()}
+      fx.fillStyle=k>.02
+        ? `rgba(${Math.round(lerp(111,255,k))},${Math.round(lerp(200,74,k))},${Math.round(lerp(240,69,k))},${(.5+.45*near).toFixed(2)})`
+        : rgba(CL.ice,.30+.55*near);
+      fx.beginPath();fx.arc(q[0],q[1],r,0,TAU);fx.fill()}
+    const re=$('#featread');
+    if(re)re.innerHTML = detT>.5
+      ? `<b class="r">${out}</b> of ${SET.length} outside the boundary`
+      : `${SET.length} traces · one point each`;
+=======
     const gx=FPL,gy=FPT,gw=FW-FPL-FPR,gh=FH-FPT-FPB;
     fx.strokeStyle=rgba(CL.ink,.05);fx.lineWidth=1;
     fx.font='8.5px "JetBrains Mono",monospace';
@@ -782,17 +883,40 @@ $$('.reveal').forEach(el=>new IntersectionObserver(es=>es.forEach(e=>{
       fx.textAlign=p.x>FW*.6?'right':'left';fx.textBaseline='alphabetic';
       fx.fillText('AES-'+SET[TROJ].id+' · 0.'+String(Math.round(SET[TROJ].score*100)).padStart(2,'0'),
         p.x+(p.x>FW*.6?-13:13),p.y-9)}
+>>>>>>> parent of bab2a43 (MOD: UI elements overhault)
   }
+
+  /* drag to turn, hover to pick — no clicks */
+  ftc.addEventListener('pointerdown',e=>{drag=true;moved=0;lastPX=e.clientX;lastPY=e.clientY});
+  addEventListener('pointerup',()=>{drag=false});
+  ftc.addEventListener('pointerleave',()=>{fPtr=null});
   ftc.addEventListener('pointermove',e=>{
     const r=ftc.getBoundingClientRect();
-    const mxp=(e.clientX-r.left)*(FW/r.width), myp=(e.clientY-r.top)*(FH/r.height);
+    fPtr={x:(e.clientX-r.left)*(FW/r.width),y:(e.clientY-r.top)*(FH/r.height)};
+    if(drag){
+      const dx=e.clientX-lastPX, dy=e.clientY-lastPY;
+      moved+=Math.abs(dx)+Math.abs(dy);
+      velY=velY*.4+(dx*0.006)*.6; velX=velX*.4+(dy*0.005)*.6;
+      rotY+=dx*0.006; rotX=clamp(rotX+dy*0.005,-.9,.9);
+      lastPX=e.clientX;lastPY=e.clientY}});
+
+  function pickFeat(){
+    if(!fPtr||drag)return;
     let best=null,bd=1e9;
-    SET.forEach(P=>{const p=fpos(P);const d=Math.hypot(p.x-mxp,p.y-myp);if(d<bd){bd=d;best=P}});
-    if(best&&bd<26){SEL=best.i;info(best)}});
+    for(const P of SET){const q=ppos(P);
+      const d=Math.hypot(q[0]-fPtr.x,q[1]-fPtr.y);
+      if(d<bd){bd=d;best=P}}
+    if(best&&bd<18)SEL=best.i}
 
   register(t=>{
     detT+=((detected?1:0)-detT)*(detected?.055:.11);
     if(detT<.0015)detT=0; if(detT>.9985)detT=1;
+<<<<<<< HEAD
+    if(!drag){rotY+=velY;rotX=clamp(rotX+velX,-.9,.9);velY*=.93;velX*=.90;
+      if(!RM)rotY+=0.0016}
+    pickFeat();
+=======
+>>>>>>> parent of bab2a43 (MOD: UI elements overhault)
     sweep=lerp(sweep,sweepProgress(),.20);
     const full=sweep>0.995;
     if(full&&!wasFull)flashT=1;
