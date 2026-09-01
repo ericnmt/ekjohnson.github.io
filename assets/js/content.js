@@ -85,7 +85,7 @@ window.CONTENT = {
   resume: {
     eyebrow:   "Resume",
     filename:  "Johnson_Eric.pdf",
-    file:      "",
+    file:      "assets/pdf/Johnson_Eric.pdf",
     slotTitle: "Resume",
     slotHint:  ""
   },
@@ -107,7 +107,7 @@ window.CONTENT = {
          file: "rapid-reprovisioning-with-virtual-switch-root-POSTER.pdf" */
     pdf: {
       filename:  "showcase-poster.pdf",
-      file:      "",
+      file:      "assets/pdf/rapid-reprovisioning-with-virtual-switch-root-POSTER.pdf",
       slotTitle: "Showcase poster / slides",
       slotHint:  ""
     }
