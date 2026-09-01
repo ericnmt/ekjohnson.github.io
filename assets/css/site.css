@@ -161,7 +161,7 @@ h2{font-family:var(--dsp);font-weight:700;font-variation-settings:"wdth" 108;
 @media(max-width:700px){#aisle{height:38vh}#lattice{height:300px}#feat{height:280px}}
 
 /* research — abstract trace + feature space */
-.tracestage{position:relative;width:100vw;margin-left:calc(50% - 50vw);margin-top:-20px}
+.tracestage{position:relative;margin-top:-20px}
 .tracesticky{display:flex;flex-direction:column}
 .tracehead{max-width:1140px;width:100%;margin:0 auto 6px;padding:0 26px;display:flex;gap:18px;
   align-items:center;flex-wrap:wrap}

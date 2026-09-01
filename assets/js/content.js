@@ -34,21 +34,12 @@ window.CONTENT = {
      ratio sets the Lissajous figure the mark eases to while that section is on
      screen — two small whole numbers. It is not shown as text anywhere. */
   menu: [
-    { id: "hero",     label: "Intro",                      ratio: [3, 2] },
-    { id: "skills",   label: "Keyword space",              ratio: [4, 3] },
-    { id: "resume",   label: "Resume",                     ratio: [5, 3] },
-    { id: "hpc",      label: "High-Performance Computing", ratio: [5, 4] },
-    { id: "it",       label: "IT Systems Automation Intern",     ratio: [7, 5] },
-    { id: "research", label: "Hardware Trojan research",   ratio: [9, 7] }
-  ],
-
-    menu: [
-    { id: "hero",     label: "Intro",                      ratio: [3, 2] },
-    { id: "skills",   label: "My Skills",              ratio: [4, 3] },
-    { id: "resume",   label: "Resume",                     ratio: [5, 3] },
-    { id: "research", label: "Hardware Trojan Research",  ratio: [5, 4] },
+    { id: "hero",     label: "Intro",                            ratio: [3, 2] },
+    { id: "skills",   label: "My Skills",                        ratio: [4, 3] },
+    { id: "resume",   label: "Resume",                           ratio: [5, 3] },
+    { id: "research", label: "Hardware Trojan Research",         ratio: [5, 4] },
     { id: "hpc",      label: "High-Performance Computing Intern", ratio: [7, 5] },
-    { id: "it",       label: "IT Systems Automation Intern",     ratio: [9, 7] },
+    { id: "it",       label: "IT Systems Automation Intern",     ratio: [9, 7] }
   ],
 
   /* ---------- 1. opening ---------- */
