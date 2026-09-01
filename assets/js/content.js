@@ -45,7 +45,7 @@ window.CONTENT = {
   /* ---------- 1. opening ---------- */
   hero: {
     eyebrow: "Intel Undergraduate Research Fellowship",
-    badge:   "· Available summer 2027",
+    badge:   "· AVAILABLE SUMMER 2027",
     name:    "Eric Johnson",
     role: [
       "<b>B.S. in Computer Science undergraduate</b> · Data Science minor",
@@ -91,20 +91,6 @@ window.CONTENT = {
     slotHint:  ""
   },
 
-    /* ---------- 4. hardware Trojan research ---------- */
-  research: {
-    eyebrow: "Research — Intel Undergraduate Research Fellow",
-    meta:    "New Mexico Institute of Mining & Technology · Aug – Dec 2026",
-    heading: "Golden-chip-free hardware Trojan detection",
-    sublede: "I am currently evaluating anomaly detection models from the Python Outlier Detection (PyOD) library for golden-chip-free hardware Trojan detection on power and electromagnetic side-channel traces. The goal is to benchmark algorithm effectiveness against classical baselines on unlabeled measurement data, flagging anything that falls outside the ordinary.",
-
-    points: [
-      "<b>The problem.</b> Hardware Trojan detection is a critical challenge in ensuring the security of integrated circuits. Traditional methods rely on golden chip references, which are impractical to obtain in many scenarios.",
-      "<b>The challenge.</b> Side-channel traces are high-dimensional, noisy, and often unlabeled, making it difficult to identify anomalies indicative of hardware Trojans. The lack of a golden reference chip further complicates the detection process.",
-      "<b>The approach.</b> Using deep learning and anomaly detection techniques, I am evaluating various models from the PyOD library to identify potential hardware Trojans in side-channel traces. The goal is to develop a robust detection framework that can operate effectively without the need for golden chip references."
-    ]
-  },
-
   /* ---------- 3. HPC internship ---------- */
   hpc: {
     eyebrow: "Los Alamos National Laboratory (LANL)",
@@ -139,6 +125,20 @@ window.CONTENT = {
       "<b>Centralization.</b> Stood up and administered Red Hat Satellite and GitLab servers, centralizing Linux package distribution and source code management.",
       "<b>Automated workflows.</b> Designed and implemented Ansible Automation Platform and PowerShell workflows for Hyper-V Hypervisor management, replacing manual per-VM configuration with automated, repeatable, modular, workflows for provisioning and state management.",
       "<b>Documentation.</b> Authored and maintained cross-platform documentation across Linux, Windows and Ansible, and provided troubleshooting support — giving new hires self-service references for common workflows and environment setup."
+    ]
+  },
+
+    /* ---------- 6. hardware Trojan research ---------- */
+  research: {
+    eyebrow: "Research — Intel Undergraduate Research Fellow",
+    meta:    "New Mexico Institute of Mining & Technology · Aug – Dec 2026",
+    heading: "Golden-chip-free hardware Trojan detection",
+    sublede: "I am currently evaluating anomaly detection models from the Python Outlier Detection (PyOD) library for golden-chip-free hardware Trojan detection on power and electromagnetic side-channel traces. The goal is to benchmark algorithm effectiveness against classical baselines on unlabeled measurement data, flagging anything that falls outside the ordinary.",
+
+    points: [
+      "<b>The problem.</b> Hardware Trojan detection is a critical challenge in ensuring the security of integrated circuits. Traditional methods rely on golden chip references, which are impractical to obtain in many scenarios.",
+      "<b>The challenge.</b> Side-channel traces are high-dimensional, noisy, and often unlabeled, making it difficult to identify anomalies indicative of hardware Trojans. The lack of a golden reference chip further complicates the detection process.",
+      "<b>The approach.</b> Using deep learning and anomaly detection techniques, I am evaluating various models from the PyOD library to identify potential hardware Trojans in side-channel traces. The goal is to develop a robust detection framework that can operate effectively without the need for golden chip references."
     ]
   },
 };
