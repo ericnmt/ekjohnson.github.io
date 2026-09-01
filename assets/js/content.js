@@ -49,7 +49,7 @@ window.CONTENT = {
     name:    "Eric Johnson",
     role: [
       "<b>B.S. in Computer Science undergraduate</b> · Data Science minor",
-      "New Mexico Institute of Mining & Technology"
+      " · <b>New Mexico Institute of Mining & Technology</b>"
       /* "Class of <b>2028</b>" */
     ],
     bio: "Three years at <b>Los Alamos National Laboratory</b> across High-Performance Computing (HPC), systems administration, and infrastructure automation, plus applied research experience in Machine Learning at <b>New Mexico Institute of Mining & Technology</b> as part of the <b>Intel Undergraduate Research Program</b>. <span>I have experience in cluster provisioning, automation in the environments they live in, and most recently am looking into hardware Trojans using side-channel signal traces with Deep Learning algorithms. </span>I am seeking a summer 2027 undergraduate internship in Artificial Intelligence, Machine Learning, or High-Performance Computing."
