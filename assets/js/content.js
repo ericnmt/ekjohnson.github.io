@@ -39,7 +39,8 @@ window.CONTENT = {
     { id: "resume",   label: "Resume",                           ratio: [5, 3] },
     { id: "research", label: "Hardware Trojan Research",         ratio: [5, 4] },
     { id: "hpc",      label: "High-Performance Computing Intern", ratio: [7, 5] },
-    { id: "it",       label: "IT Systems Automation Intern",     ratio: [9, 7] }
+    { id: "it",       label: "IT Systems Automation Intern",     ratio: [9, 7] },
+    { id: "projects", label: "Additional Projects",              ratio: [11, 8] }
   ],
 
   /* ---------- 1. opening ---------- */
@@ -140,4 +141,40 @@ window.CONTENT = {
       "<b>The approach.</b> Using deep learning and anomaly detection techniques, I am evaluating various models from the PyOD library to identify potential hardware Trojans in side-channel traces. The goal is to develop a robust detection framework that can operate effectively without the need for golden chip references."
     ]
   },
+
+  /* ---------- 7. additional projects ----------
+     A plain list — no canvas, no animation. Each entry is one card:
+       title:       shows as the card heading
+       description: a sentence or two (basic HTML is fine)
+       url:         where the card links; leave "" (or omit it) for a card
+                    with no link — it renders as plain text instead of a link
+       tag:         optional small label on the right of the title
+                    (a year, a stack, "in progress" — leave "" for none)
+     Add or remove entries freely; the grid re-flows on its own. */
+  projects: {
+    eyebrow: "Additional Projects",
+    heading: "A few smaller things",
+    sublede: "",
+
+    items: [
+      // {
+      //   title:       "Project name",
+      //   description: "One or two sentences on what it is and why it exists.",
+      //   url:         "https://github.com/ericnmt/project-name",
+      //   tag:         "2026"
+      // },
+       {
+         title:       "Object Oriented Programming Clinic Scheduler",
+         description: "A Java program that simulates a clinic scheduler command-line interface. It uses object-oriented programming principles to manage patients, appointments, and clinic faculty schedules. The program allows users to add, remove, and view appointments, while ensuring that business logic constraints are met. It also includes error handling and input validation to provide a robust user experience.",
+         url:         "https://github.com/ericnmt/oop-clinic-scheduler",
+         tag:         "OOP"
+       },
+       {
+         title:       "Binary Classification with fastai",
+         description: "A simple demonstration using fastai's library to perform binary classification on a dataset consisting of cat and dog images. The project showcases the use of pre-trained convolutional neural networks (CNNs) for image classification tasks, leveraging transfer learning to achieve accurate results with a relatively small dataset. The notebook includes data preprocessing, model training, and evaluation steps, providing an example of using the fastai framework for practical machine learning applications.",
+         url:         "https://github.com/ericnmt/fastai-cat-demo",
+         tag:         "CNNs"
+       },
+    ]
+  }
 };

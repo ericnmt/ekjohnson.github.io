@@ -17,6 +17,17 @@ const cget=p=>p.split('.').reduce((o,k)=>(o==null?o:o[k]),C);
     el.innerHTML=a.map(t=>`<p>${t}</p>`).join('')});
   q('[data-c-facts]').forEach(el=>{const a=cget(el.dataset.cFacts)||[];
     el.innerHTML=a.map(f=>`<div class="metric txt"><div class="mv">${f.value}</div><div class="ml">${f.label}</div></div>`).join('')});
+  /* a simple, non-canvas grid of small project cards — title, description, link */
+  q('[data-c-projects]').forEach(el=>{const a=cget(el.dataset.cProjects)||[];
+    if(!a.length){el.innerHTML=`<div class="proj-empty">Add entries to <b>projects.items</b> in content.js to fill this in.</div>`;return}
+    el.innerHTML=a.map(p=>{
+      const tag=p.tag?`<span class="proj-tag">${p.tag}</span>`:'';
+      const body=`<div class="proj-top"><h3>${p.title||''}</h3>${tag}</div>`+
+        (p.description?`<p>${p.description}</p>`:'');
+      return p.url
+        ? `<a class="proj" href="${p.url}" target="_blank" rel="noopener">${body}<span class="proj-go">↗ visit</span></a>`
+        : `<div class="proj proj-static">${body}</div>`;
+    }).join('')});
   /* a PDF area shows an embed once a file is named in content.js, an empty slot until then */
   q('[data-pdf]').forEach(el=>{
     const d=cget(el.dataset.pdf)||{}, name=d.filename||'document.pdf';
