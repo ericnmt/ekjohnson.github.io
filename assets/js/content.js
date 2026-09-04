@@ -86,11 +86,16 @@ window.CONTENT = {
   /* ---------- 3. resume ----------
      To show a real PDF: put the file in  assets/pdf/  and set
        file: "assets/pdf/resume.pdf"
-     Leave file as "" and the section shows an empty viewer slot instead. */
+     Leave file as "" and the section shows an empty viewer slot instead.
+     ratio: [w,h] is the PDF's own page proportions — a US Letter page is
+     [17,22], A4 is roughly [17,24]. Getting this right is what keeps the
+     embed from being cropped or padded with dead space; if you swap in a
+     PDF with a different page size, update this to match. */
   resume: {
     eyebrow:   "Resume",
     filename:  "Johnson_Eric.pdf",
     file:      "assets/pdf/Johnson_Eric.pdf",
+    ratio:     [17, 22],
     slotTitle: "Resume",
     slotHint:  ""
   },
@@ -107,12 +112,14 @@ window.CONTENT = {
       "<b>Cluster deployment.</b> Over the course of three weeks, I worked with a team to stand up and deploy a compute cluster using OpenCHAMI, cloud-init, Slurm WLM, and Ansible for configuration management. We leveraged CI/CD pipelines to automate the deployment process, ensuring consistency and repeatability across the cluster.",
     ],
 
-    /* Same as the resume slot. The showcase poster already in this repo can be
-       wired up by setting:
+    /* Same as the resume slot, including ratio — this poster is a 44x34in
+       landscape sheet, [22,17]. The showcase poster already in this repo can
+       be wired up by setting:
          file: "rapid-reprovisioning-with-virtual-switch-root-POSTER.pdf" */
     pdf: {
       filename:  "showcase-poster.pdf",
       file:      "assets/pdf/rapid-reprovisioning-with-virtual-switch-root-POSTER.pdf",
+      ratio:     [22, 17],
       slotTitle: "Showcase poster / slides",
       slotHint:  ""
     }

@@ -108,7 +108,13 @@ h2{font-family:var(--dsp);font-weight:700;font-variation-settings:"wdth" 108;
 .pdfbar .fn{color:var(--ink)}
 .pdfbar .rt{margin-left:auto;color:var(--faint)}
 .pdfbar .dot{width:7px;height:7px;border-radius:2px;background:var(--am)}
-.pdfview{background:#2A2A2E;padding:22px;display:flex;justify-content:center}
+/* the embed is sized to the PDF's own aspect ratio (set inline, per document) so
+   it fills the frame exactly — no letterboxing, no cropped scroll — with a
+   narrow mat around it so the white page reads as intentional against the dark
+   site rather than a stark rectangle. A portrait document is capped to a
+   readable width and centered instead of stretching edge to edge. */
+.pdfview{background:var(--panel2);padding:18px}
+.pdfview.portrait{display:flex;justify-content:center}
 .page{background:#FBFAF7;color:#141310;width:100%;max-width:760px;padding:38px 44px;
   font-family:"Atkinson Hyperlegible",serif;font-size:11.6px;line-height:1.5;
   box-shadow:0 18px 44px -20px rgba(0,0,0,.8)}
@@ -125,7 +131,8 @@ h2{font-family:var(--dsp);font-weight:700;font-variation-settings:"wdth" 108;
 .page b.k{color:#141310}
 .pdfslot{background:#17171C;border:1px dashed var(--line);border-radius:3px;min-height:190px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
-  font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.06em;text-align:center;padding:26px}
+  font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.06em;text-align:center;padding:26px;
+  box-sizing:border-box}
 .pdfslot .ic{width:34px;height:42px;border:1px solid var(--faint);border-radius:2px;position:relative}
 .pdfslot .ic::after{content:"";position:absolute;top:0;right:0;border:6px solid transparent;
   border-top-color:var(--faint);border-right-color:var(--faint);opacity:.5}
@@ -200,6 +207,10 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);margin-top:7
 
 /* ---------- added when the page was split out of the single-file build ---------- */
 .afternote{margin:16px 0 0;font-size:13px;color:var(--dim)}
-.pdfdoc{display:block;width:100%;height:min(78vh,900px);border:0;background:#0A0A0C}
+/* aspect-ratio is set inline per document (from content.js) so height falls out
+   of the real page proportions instead of a fixed guess */
+.pdfdoc{display:block;width:100%;height:auto;border:0;background:#0A0A0C}
+.pdfview.portrait .pdfdoc{width:100%;max-width:600px}
+@media(max-width:700px){.pdfview{padding:10px}.pdfview.portrait .pdfdoc{max-width:100%}}
 .pdfslot a{color:var(--am)}
 main.wrap{display:block}

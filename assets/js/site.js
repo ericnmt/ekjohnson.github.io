@@ -28,17 +28,28 @@ const cget=p=>p.split('.').reduce((o,k)=>(o==null?o:o[k]),C);
         ? `<a class="proj" href="${p.url}" target="_blank" rel="noopener">${body}<span class="proj-go">↗ visit</span></a>`
         : `<div class="proj proj-static">${body}</div>`;
     }).join('')});
-  /* a PDF area shows an embed once a file is named in content.js, an empty slot until then */
+  /* a PDF area shows an embed once a file is named in content.js, an empty slot until then.
+     ratio: [w,h] is the PDF's own page size (e.g. a Letter page is [17,22]) — the
+     embed is sized to that exact aspect ratio so nothing gets cropped or padded
+     with dead space, and a tall/portrait page is capped to a readable width
+     instead of stretching edge to edge. */
   q('[data-pdf]').forEach(el=>{
     const d=cget(el.dataset.pdf)||{}, name=d.filename||'document.pdf';
+    const ratio=(Array.isArray(d.ratio)&&d.ratio.length===2)?d.ratio:[17,22];
+    const portrait=ratio[1]>ratio[0];
     const bar=`<div class="pdfbar"><span class="dot"></span><span class="fn">${name}</span>`+
       `<span class="rt">${d.file?'embedded':'empty slot'}</span></div>`;
-    el.innerHTML=bar+(d.file
-      ? `<div class="pdfview"><object class="pdfdoc" data="${d.file}" type="application/pdf">`+
+    if(d.file){
+      const src=d.file+(d.file.includes('#')?'':'#toolbar=0&navpanes=0&scrollbar=0');
+      el.innerHTML=bar+`<div class="pdfview${portrait?' portrait':''}">`+
+        `<object class="pdfdoc" style="aspect-ratio:${ratio[0]}/${ratio[1]}" data="${src}" type="application/pdf">`+
         `<div class="pdfslot" style="width:100%"><span class="ic"></span><span><b>${name}</b></span>`+
-        `<span><a href="${d.file}">open the PDF</a> — this browser will not display it inline</span></div></object></div>`
-      : `<div class="pdfview" style="padding:16px"><div class="pdfslot" style="width:100%">`+
-        `<span class="ic"></span><span><b>${d.slotTitle||''}</b></span><span>${d.slotHint||''}</span></div></div>`)});
+        `<span><a href="${d.file}">open the PDF</a> — this browser will not display it inline</span></div></object></div>`;
+    }else{
+      el.innerHTML=bar+`<div class="pdfview${portrait?' portrait':''}" style="padding:16px">`+
+        `<div class="pdfslot" style="width:100%;aspect-ratio:${ratio[0]}/${ratio[1]};max-height:340px">`+
+        `<span class="ic"></span><span><b>${d.slotTitle||''}</b></span><span>${d.slotHint||''}</span></div></div>`;
+    }});
   const t=cget('site.title'); if(t){document.title=t;
     const og=document.querySelector('meta[property="og:title"]'); if(og)og.setAttribute('content',t)}
   const de=cget('site.description'), md=document.querySelector('meta[name="description"]');
