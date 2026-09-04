@@ -70,11 +70,11 @@ window.CONTENT = {
       ["Rocky Linux", "hpc"], ["Podman", "hpc"], ["Bash", "hpc"], ["systemd-nspawn", "hpc"],
 
       ["Ansible", "it"], ["GitLab CI/CD", "it"], ["Red Hat Satellite", "it"],
-      ["Hyper-V", "it"], ["PowerShell", "it"],
-      ["Docker", "it"], ["RHEL", "it"], ["documentation", "it"], ["SQL", "it"],
+      ["Hyper-V", "it"], ["PowerShell", "it"], ["Java", "it"],
+      ["Docker", "it"], ["RHEL", "it"], ["documentation", "it"], ["SQL", "it"], 
 
       ["PyOD", "research"], ["PyTorch", "research"], ["anomaly detection", "research"],
-      ["side-channel", "research"], ["CNNs", "research"], ["Hugging Face", "research"],
+      /*["side-channel", "research"], */["CNNs", "research"], ["Hugging Face", "research"],
       ["Keras / TF", "research"], ["Python", "research"], ["R", "research"]
     ]
   },
