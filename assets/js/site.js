@@ -37,8 +37,7 @@ const cget=p=>p.split('.').reduce((o,k)=>(o==null?o:o[k]),C);
     const d=cget(el.dataset.pdf)||{}, name=d.filename||'document.pdf';
     const ratio=(Array.isArray(d.ratio)&&d.ratio.length===2)?d.ratio:[17,22];
     const portrait=ratio[1]>ratio[0];
-    const bar=`<div class="pdfbar"><span class="dot"></span><span class="fn">${name}</span>`+
-      `<span class="rt">${d.file?'embedded':'empty slot'}</span></div>`;
+    const bar=`<div class="pdfbar"><span class="dot"></span><span class="fn">${name}</span></div>`;
     if(d.file){
       const src=d.file+(d.file.includes('#')?'':'#toolbar=0&navpanes=0&scrollbar=0');
       el.innerHTML=bar+`<div class="pdfview${portrait?' portrait':''}">`+
@@ -54,7 +53,8 @@ const cget=p=>p.split('.').reduce((o,k)=>(o==null?o:o[k]),C);
     const og=document.querySelector('meta[property="og:title"]'); if(og)og.setAttribute('content',t)}
   const de=cget('site.description'), md=document.querySelector('meta[name="description"]');
   if(md&&de)md.setAttribute('content',de);
-  q('.mocknote').forEach(el=>{if(!el.textContent.trim())el.remove()});
+  /* auto-remove optional bits of copy when left blank in content.js */
+  q('.mocknote,.opthint').forEach(el=>{if(!el.textContent.trim())el.remove()});
 })();
 
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
