@@ -61,7 +61,10 @@ window.CONTENT = {
     heading: "What I work with",
     sublede: "My experience spans both</span> High-Performance Computing / Systems Administration and Machine Learning Research. Everything below are the skills that I have developed so far as a result.</span>",
 
-    /* Each entry is [ "the words on the pill", "which cluster" ].
+    /* Each entry is [ "the words on the pill", "which cluster" ] and, optionally,
+       a third value naming a section id to jump to instead of the cluster's own
+       section — used here to send a few keywords straight to "projects" since
+       that's where they're actually demonstrated.
        The cluster must be one of: "hpc", "it", "research".
        Add or remove lines freely — the layout re-solves itself. */
     keywords: [
@@ -70,11 +73,11 @@ window.CONTENT = {
       ["Rocky Linux", "hpc"], ["Podman", "hpc"], ["Bash", "hpc"], ["systemd-nspawn", "hpc"],
 
       ["Ansible", "it"], ["GitLab CI/CD", "it"], ["Red Hat Satellite", "it"],
-      ["Hyper-V", "it"], ["PowerShell", "it"], ["Java", "it"],
-      ["Docker", "it"], ["RHEL", "it"], ["documentation", "it"], ["SQL", "it"], 
+      ["Hyper-V", "it"], ["PowerShell", "it"], ["Java", "it", "projects"],
+      ["Docker", "it"], ["RHEL", "it"], ["documentation", "it"], ["SQL", "it", "projects"],
 
       ["PyOD", "research"], ["PyTorch", "research"], ["anomaly detection", "research"],
-      /*["side-channel", "research"], */["CNNs", "research"], ["Hugging Face", "research"],
+      /*["side-channel", "research"], */["CNNs", "research", "projects"], ["Hugging Face", "research"],
       ["Keras / TF", "research"], ["Python", "research"], ["R", "research"]
     ]
   },

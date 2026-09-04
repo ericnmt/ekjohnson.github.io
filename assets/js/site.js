@@ -154,7 +154,7 @@ $$('.reveal').forEach(el=>new IntersectionObserver(es=>es.forEach(e=>{
     const c=CEN[tg[1]];
     // fibonacci-ish spread inside a small sphere per cluster
     const u=rr()*TAU,v=Math.acos(2*rr()-1),r=(0.35+Math.cbrt(rr())*.34);
-    return {t:tg[0],g:tg[1],i,
+    return {t:tg[0],g:tg[1],go:tg[2]?('#'+tg[2]):null,i,
       x:c[0]+Math.sin(v)*Math.cos(u)*r*1.05,
       y:c[1]+Math.cos(v)*r*.78,
       z:c[2]+Math.sin(v)*Math.sin(u)*r*1.05}});
@@ -184,7 +184,7 @@ $$('.reveal').forEach(el=>new IntersectionObserver(es=>es.forEach(e=>{
     b.addEventListener('blur',()=>{HOT=null});
     b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();
       if(moved)return;
-      const tgt=document.querySelector(GO[n.g]);
+      const tgt=document.querySelector(n.go||GO[n.g]);
       if(tgt)tgt.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'})});
     wrap.append(b);return b});
   let HOT=null,rotY=.35,rotX=-.10,spin=.10,drag=null,inside=false,moved=false,velY=0,velX=0;
