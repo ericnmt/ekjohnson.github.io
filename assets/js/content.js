@@ -59,6 +59,7 @@ window.CONTENT = {
   skills: {
     eyebrow: "My Skills",
     heading: "What I work with",
+    slotHint: "Click a keyword to jump to the section where it is demonstrated.",
     sublede: "My experience spans both</span> High-Performance Computing / Systems Administration and Machine Learning Research. Everything below are the skills that I have developed so far as a result.</span>",
 
     /* Each entry is [ "the words on the pill", "which cluster" ] and, optionally,
