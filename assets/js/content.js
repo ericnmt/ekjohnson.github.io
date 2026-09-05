@@ -93,7 +93,7 @@ window.CONTENT = {
      PDF with a different page size, update this to match. */
   resume: {
     eyebrow:   "Resume",
-    filename:  "",
+    filename:  "johnson-eric-resume.pdf",
     file:      "assets/pdf/Johnson_Eric.pdf",
     ratio:     [17, 22],
     slotTitle: "Resume",
@@ -117,7 +117,7 @@ window.CONTENT = {
        be wired up by setting:
          file: "rapid-reprovisioning-with-virtual-switch-root-POSTER.pdf" */
     pdf: {
-      filename:  "",
+      filename:  "virtual-switch-root.pdf",
       file:      "assets/pdf/rapid-reprovisioning-with-virtual-switch-root-POSTER.pdf",
       ratio:     [22, 17],
       slotTitle: "Showcase poster / slides",
